@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>C Programming Basics — LearnForge</title>
+  <meta name="description" content="Master C programming fundamentals with simple analogies, beginner-friendly syntax examples, and interactive progress tracking on LearnForge.">
+
+  <style>
+    /* ==========================================================================
+       1. CSS CUSTOM PROPERTIES & TOKENS
+       ========================================================================== */
+    :root {
+      --bg-base: #0a0e17;
+      --bg-surface: #111827;
+      --bg-card: #162032;
+      --bg-card-hover: #1d293f;
+      --bg-code: #070b12;
+      --bg-term: #05080e;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --accent-primary: #38bdf8;
+      --accent-primary-hover: #0ea5e9;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --accent-badge: #f59e0b;
+      --accent-badge-bg: rgba(245, 158, 11, 0.12);
+      --accent-success: #10b981;
+      --accent-success-bg: rgba(16, 185, 129, 0.12);
+
+      --syn-keyword: #f472b6;
+      --syn-type: #38bdf8;
+      --syn-string: #34d399;
+      --syn-number: #fbbf24;
+      --syn-comment: #64748b;
+      --syn-function: #60a5fa;
+      --syn-header: #fb923c;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.4);
+
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --transition-speed: 0.2s;
+    }
+
+    /* ==========================================================================
+       2. GLOBAL RESET & BASE RULES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION BAR & MOBILE DRAWER
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 64px;
+      background-color: rgba(10, 14, 23, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 1240px;
+      height: 100%;
+      margin-inline: auto;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+      height: 100%;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-main);
+      text-decoration: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .brand-icon {
+      width: 22px;
+      height: 22px;
+      color: var(--accent-primary);
+      flex-shrink: 0;
+    }
+
+    .nav-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .nav-breadcrumbs a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition-speed);
+    }
+
+    .nav-breadcrumbs a:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .nav-breadcrumbs .sep {
+      color: var(--text-dim);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      height: 100%;
+    }
+
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .desktop-nav-links li {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .desktop-nav-links a {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-sm);
+      line-height: 1;
+      transition: all var(--transition-speed);
+    }
+
+    .desktop-nav-links a:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .hamburger-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      padding: 0;
+      cursor: pointer;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .hamburger-btn:hover {
+      border-color: var(--accent-primary);
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    .mobile-menu-drawer {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.25rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 999;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu-drawer.is-open {
+      display: flex;
+    }
+
+    .mobile-menu-drawer a {
+      display: flex;
+      align-items: center;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background-color var(--transition-speed);
+    }
+
+    .mobile-menu-drawer a:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--accent-primary);
+    }
+
+    /* ==========================================================================
+       4. COURSE HERO & INTERACTIVE PROGRESS BAR
+       ========================================================================== */
+    .course-hero {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.6) 0%, var(--bg-base) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 2.5rem 1.25rem 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin-inline: auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background-color: var(--accent-glow);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .course-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .course-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 800px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-tracker-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      max-width: 800px;
+    }
+
+    .progress-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .progress-title {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .progress-stats {
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-primary) 0%, #10b981 100%);
+      transition: width 0.4s ease;
+      border-radius: 999px;
+    }
+
+    .roadmap-container {
+      margin-top: 1.5rem;
+    }
+
+    .roadmap-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+
+    .roadmap-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .roadmap-pill {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.65rem;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all var(--transition-speed);
+    }
+
+    .roadmap-pill:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-main);
+    }
+
+    .roadmap-arrow {
+      color: var(--text-dim);
+      font-size: 0.75rem;
+    }
+
+    /* ==========================================================================
+       5. TUTORIAL LAYOUT & STICKY SIDEBAR
+       ========================================================================== */
+    .tutorial-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 2.5rem;
+      padding: 2.5rem 1.25rem 4rem;
+      min-width: 0;
+    }
+
+    .toc-sidebar {
+      position: sticky;
+      top: 84px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .toc-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.85rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .toc-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-speed);
+    }
+
+    .toc-link:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+
+    .toc-check {
+      display: none;
+      color: var(--accent-success);
+      font-weight: 700;
+    }
+
+    .toc-item-done .toc-check {
+      display: inline-block;
+    }
+
+    .mobile-toc-accordion {
+      display: none;
+      margin-bottom: 2rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .mobile-toc-summary {
+      padding: 0.85rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent-primary);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .mobile-toc-inner {
+      padding: 0.5rem 1.25rem 1rem;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    /* ==========================================================================
+       6. CONTENT STREAM & TOPIC CARDS
+       ========================================================================== */
+    .content-stream {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .topic-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.25rem;
+      scroll-margin-top: 80px;
+      min-width: 0;
+      transition: border-color 0.2s ease;
+    }
+
+    .topic-section.topic-done {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .topic-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .topic-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+
+    .topic-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .complete-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      white-space: nowrap;
+    }
+
+    .complete-toggle-btn:hover {
+      border-color: var(--accent-success);
+      color: var(--text-main);
+    }
+
+    .complete-toggle-btn.is-completed {
+      background-color: var(--accent-success-bg);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--accent-success);
+    }
+
+    .subheading {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 1.75rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .text-p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      min-width: 0;
+    }
+
+    .analogy-box {
+      background-color: rgba(56, 189, 248, 0.05);
+      border-left: 3px solid var(--accent-primary);
+      padding: 1rem 1.25rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-block: 1rem;
+      font-size: 0.93rem;
+      color: var(--text-main);
+    }
+
+    .callout-box {
+      background-color: rgba(245, 158, 11, 0.06);
+      border-left: 3px solid var(--accent-badge);
+      padding: 1rem 1.25rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-block: 1rem;
+      font-size: 0.93rem;
+      color: var(--text-main);
+    }
+
+    /* ==========================================================================
+       7. CODE EDITORS, TERMINALS & TABLES
+       ========================================================================== */
+    .code-card {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-block: 1.25rem;
+      min-width: 0;
+    }
+
+    .code-header {
+      background-color: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background-color: #ef4444; }
+    .dot-yellow { background-color: #f59e0b; }
+    .dot-green { background-color: #10b981; }
+
+    .file-name {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .copy-btn {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+    }
+
+    .copy-btn:hover {
+      background-color: var(--accent-primary);
+      color: #030712;
+    }
+
+    .code-body {
+      padding: 1.25rem;
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .c-dir { color: var(--syn-header); font-weight: 600; }
+    .c-hdr { color: var(--syn-string); }
+    .c-type { color: var(--syn-type); font-weight: 600; }
+    .c-fn { color: var(--syn-function); }
+    .c-key { color: var(--syn-keyword); font-weight: 600; }
+    .c-str { color: var(--syn-string); }
+    .c-num { color: var(--syn-number); }
+    .c-cmt { color: var(--syn-comment); font-style: italic; }
+
+    .terminal-box {
+      background-color: var(--bg-term);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-block: 1rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .terminal-label {
+      color: var(--accent-success);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .term-output {
+      color: #a7f3d0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-block: 1rem 1.5rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .styled-table th {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .styled-table td {
+      padding: 0.75rem 1rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .styled-table code {
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.08);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+    }
+
+    /* ==========================================================================
+       8. PROJECT DEVELOPMENT STATUS CARD
+       ========================================================================== */
+    .dev-status-card {
+      background: linear-gradient(180deg, rgba(22, 32, 50, 0.8) 0%, rgba(17, 24, 39, 0.95) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      margin-top: 4.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .dev-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+    }
+
+    .dev-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-primary);
+    }
+
+    .dev-status-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 640px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-block: 2.5rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    /* ==========================================================================
+       9. RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .tutorial-layout {
+        grid-template-columns: 1fr;
+        padding-inline: 1rem;
+      }
+      .toc-sidebar {
+        display: none;
+      }
+      .mobile-toc-accordion {
+        display: block;
+      }
+      .desktop-nav-links {
+        display: none;
+      }
+      .hamburger-btn {
+        display: inline-flex;
+      }
+      .topic-section {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .nav-container {
+        padding-inline: 0.85rem;
+      }
+      .brand-logo span {
+        font-size: 1.05rem;
+      }
+      .nav-breadcrumbs span:last-child {
+        display: none;
+      }
+      .nav-breadcrumbs .sep {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SITE HEADER
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="nav-brand-group">
+        <a href="index.html" class="brand-logo" aria-label="LearnForge Home">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+            <path d="M12 2v4"></path>
+            <path d="M12 18v4"></path>
+          </svg>
+          <span>LearnForge</span>
+        </a>
+        <div class="nav-breadcrumbs" aria-label="Breadcrumb trail">
+          <a href="index.html">← Home</a>
+          <span class="sep">/</span>
+          <span>C Programming</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <ul class="desktop-nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#resources">Resources</a></li>
+          <li><a href="practice.html">Practice</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+        <button class="hamburger-btn" id="navToggle" aria-label="Toggle Navigation" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="index.html#resources">Resources</a>
+      <a href="practice.html">Practice</a>
+      <a href="index.html#about">About</a>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       COURSE HERO & PROGRESS TRACKER
+       ========================================================================== -->
+  <header class="course-hero">
+    <div class="container">
+      <span class="hero-badge">C PROGRAMMING CORE MODULE</span>
+      <h1 class="course-title">C Programming: Foundations to Mastery</h1>
+      <p class="course-desc">
+        A structured, beginner-friendly learning path covering C programming from the ground up. Follow the cycle: Understand the concept, see the code, verify the output, and test yourself with practice questions.
+      </p>
+
+      <!-- Interactive Progress System -->
+      <div class="progress-tracker-card">
+        <div class="progress-info-row">
+          <span class="progress-title">Your Course Progress</span>
+          <span class="progress-stats" id="progressText">0 / 16 Topics (0%)</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+      </div>
+
+      <!-- Roadmap Flow -->
+      <div class="roadmap-container">
+        <div class="roadmap-title">Curriculum Path:</div>
+        <div class="roadmap-flow">
+          <a href="#intro" class="roadmap-pill">Intro</a><span class="roadmap-arrow">→</span>
+          <a href="#structure" class="roadmap-pill">Structure</a><span class="roadmap-arrow">→</span>
+          <a href="#variables" class="roadmap-pill">Variables</a><span class="roadmap-arrow">→</span>
+          <a href="#io" class="roadmap-pill">I/O</a><span class="roadmap-arrow">→</span>
+          <a href="#operators" class="roadmap-pill">Operators</a><span class="roadmap-arrow">→</span>
+          <a href="#decisions" class="roadmap-pill">Conditionals</a><span class="roadmap-arrow">→</span>
+          <a href="#switch" class="roadmap-pill">Switch</a><span class="roadmap-arrow">→</span>
+          <a href="#loops" class="roadmap-pill">Loops</a><span class="roadmap-arrow">→</span>
+          <a href="#jump" class="roadmap-pill">Jump</a><span class="roadmap-arrow">→</span>
+          <a href="#arrays1d" class="roadmap-pill">1-D Arrays</a><span class="roadmap-arrow">→</span>
+          <a href="#arrays2d" class="roadmap-pill">2-D Arrays</a><span class="roadmap-arrow">→</span>
+          <a href="#searching" class="roadmap-pill">Searching</a><span class="roadmap-arrow">→</span>
+          <a href="#strings" class="roadmap-pill">Strings</a><span class="roadmap-arrow">→</span>
+          <a href="#functions" class="roadmap-pill">Functions</a><span class="roadmap-arrow">→</span>
+          <a href="#pointers" class="roadmap-pill">Pointers</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container tutorial-layout">
+
+    <!-- Desktop Sticky Sidebar -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">Course Modules</div>
+      <ul class="toc-list" id="tocList">
+        <li><a href="#intro" class="toc-link"><span>01. Introduction to C</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#structure" class="toc-link"><span>02. First C Program</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#variables" class="toc-link"><span>03. Variables &amp; Types</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#io" class="toc-link"><span>04. Input &amp; Output</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#operators" class="toc-link"><span>05. Operators in C</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#decisions" class="toc-link"><span>06. Selection (if/else/nested)</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#switch" class="toc-link"><span>07. Switch Statement</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#loops" class="toc-link"><span>08. Loops (for/while/do-while)</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#jump" class="toc-link"><span>09. Jump (break/continue)</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#arrays1d" class="toc-link"><span>10. 1-D Arrays</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#arrays2d" class="toc-link"><span>11. 2-D Arrays</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#searching" class="toc-link"><span>12. Searching (Linear/Binary)</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#strings" class="toc-link"><span>13. Strings in C</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#functions" class="toc-link"><span>14. Functions</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#storage" class="toc-link"><span>15. Storage Classes</span><span class="toc-check">&#10003;</span></a></li>
+        <li><a href="#pointers" class="toc-link"><span>16. Pointers</span><span class="toc-check">&#10003;</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- Mobile Accordion Table of Contents -->
+    <div class="mobile-toc-accordion">
+      <details>
+        <summary class="mobile-toc-summary">☰ Jump to Course Module</summary>
+        <div class="mobile-toc-inner">
+          <ul class="toc-list" id="mobileTocList">
+            <li><a href="#intro" class="toc-link">01. Introduction to C</a></li>
+            <li><a href="#structure" class="toc-link">02. First C Program</a></li>
+            <li><a href="#variables" class="toc-link">03. Variables &amp; Types</a></li>
+            <li><a href="#io" class="toc-link">04. Input &amp; Output</a></li>
+            <li><a href="#operators" class="toc-link">05. Operators in C</a></li>
+            <li><a href="#decisions" class="toc-link">06. Selection (if/else/nested)</a></li>
+            <li><a href="#switch" class="toc-link">07. Switch Statement</a></li>
+            <li><a href="#loops" class="toc-link">08. Loops (for/while/do-while)</a></li>
+            <li><a href="#jump" class="toc-link">09. Jump (break/continue)</a></li>
+            <li><a href="#arrays1d" class="toc-link">10. 1-D Arrays</a></li>
+            <li><a href="#arrays2d" class="toc-link">11. 2-D Arrays</a></li>
+            <li><a href="#searching" class="toc-link">12. Searching</a></li>
+            <li><a href="#strings" class="toc-link">13. Strings</a></li>
+            <li><a href="#functions" class="toc-link">14. Functions</a></li>
+            <li><a href="#storage" class="toc-link">15. Storage Classes</a></li>
+            <li><a href="#pointers" class="toc-link">16. Pointers</a></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="content-stream">
+
+      <!-- Topic 01: Introduction to C -->
+      <section id="intro" class="topic-section" data-topic="intro">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 01</span>
+            <h2 class="topic-title">Introduction to C Programming</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('intro')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          C is a general-purpose, procedural programming language developed in 1972 by <strong>Dennis Ritchie</strong> at <strong>AT&amp;T Bell Laboratories</strong>. Originally designed to rewrite the UNIX operating system, C provides direct control over computer memory and hardware while maintaining a structured, readable syntax.
+        </p>
+        <div class="analogy-box">
+          <strong>Analogy — The Foundation of Modern Software:</strong><br>
+          Learning C is like learning to drive a manual transmission car. It teaches you how the engine, clutch, and gears actually interact. Understanding C provides a solid foundation for mastering memory management, operating systems, and other programming languages.
+        </div>
+        <h3 class="subheading">Where is C Used Today?</h3>
+        <p class="text-p">
+          C powers operating systems (Linux, Windows, macOS kernels), embedded systems (microcontrollers, automotive computers, IoT devices), and game engines where execution speed and minimal memory overhead are essential.
+        </p>
+      </section>
+
+      <!-- Topic 02: Structure of a C Program -->
+      <section id="structure" class="topic-section" data-topic="structure">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 02</span>
+            <h2 class="topic-title">Structure of a C Program</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('structure')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Every C program follows a precise blueprint. Let's inspect the universal first program:
+        </p>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">hello.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Hello, World!\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Hello, World!</div>
+        </div>
+
+        <h3 class="subheading">Line-by-Line Breakdown:</h3>
+        <ul class="text-p" style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li><code>#include &lt;stdio.h&gt;</code>: Standard I/O header containing the definition for <code>printf()</code>.</li>
+          <li><code>int main()</code>: The mandatory entry point where computer execution begins.</li>
+          <li><code>{ ... }</code>: Curly braces define the boundaries of the code block.</li>
+          <li><code>printf(...)</code>: Built-in function that prints text to the screen.</li>
+          <li><code>;</code> (Semicolon): Marks the end of an executable statement in C.</li>
+          <li><code>return 0;</code>: Signals to the operating system that the program completed successfully without errors.</li>
+        </ul>
+      </section>
+
+      <!-- Topic 03: Variables, Constants and Data Types -->
+      <section id="variables" class="topic-section" data-topic="variables">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 03</span>
+            <h2 class="topic-title">Variables, Constants &amp; Data Types</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('variables')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A <strong>variable</strong> is a named storage location in memory whose value can change during program execution. A <strong>constant</strong> is a value defined once that remains fixed.
+        </p>
+
+        <div class="table-wrap">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Data Type</th>
+                <th>Keyword</th>
+                <th>Typical Size</th>
+                <th>Format Specifier</th>
+                <th>Example Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Integer</td><td><code>int</code></td><td>4 bytes</td><td><code>%d</code></td><td><code>42</code></td></tr>
+              <tr><td>Single Floating Point</td><td><code>float</code></td><td>4 bytes</td><td><code>%f</code></td><td><code>3.14f</code></td></tr>
+              <tr><td>Double Precision</td><td><code>double</code></td><td>8 bytes</td><td><code>%lf</code></td><td><code>3.14159265</code></td></tr>
+              <tr><td>Single Character</td><td><code>char</code></td><td>1 byte</td><td><code>%c</code></td><td><code>'A'</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">variables_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> studentAge = <span class="c-num">19</span>;
+    <span class="c-type">float</span> cgpa = <span class="c-num">8.75</span>;
+    <span class="c-type">char</span> grade = <span class="c-str">'A'</span>;
+    <span class="c-key">const</span> <span class="c-type">int</span> passMark = <span class="c-num">35</span>;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Age: %d | CGPA: %.2f | Grade: %c | Pass: %d\n"</span>, 
+           studentAge, cgpa, grade, passMark);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Age: 19 | CGPA: 8.75 | Grade: A | Pass: 35</div>
+        </div>
+      </section>
+
+      <!-- Topic 04: Input and Output -->
+      <section id="io" class="topic-section" data-topic="io">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 04</span>
+            <h2 class="topic-title">Input and Output: <code>printf()</code> &amp; <code>scanf()</code></h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('io')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Input and output allow your program to communicate with the user. <code>printf()</code> sends information out to the screen, while <code>scanf()</code> reads data typed into the keyboard.
+        </p>
+        <div class="analogy-box">
+          <strong>Why is the <code>&amp;</code> (Ampersand) Required in <code>scanf()</code>?</strong><br>
+          Think of a variable as a labeled locker. When asking someone to deliver mail into your locker, you don't give them the value inside—you give them the <strong>address of the locker</strong>. The <code>&amp;</code> operator provides the memory address so <code>scanf()</code> knows exactly where to store the user's input.
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">input_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> age;
+    <span class="c-fn">printf</span>(<span class="c-str">"Enter your age: "</span>);
+    <span class="c-fn">scanf</span>(<span class="c-str">"%d"</span>, &amp;age);
+
+    <span class="c-fn">printf</span>(<span class="c-str">"You entered age: %d\n"</span>, age);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Simulated Interaction:</div>
+          <div class="term-output">Enter your age: 19
+You entered age: 19</div>
+        </div>
+      </section>
+
+      <!-- Topic 05: Operators in C -->
+      <section id="operators" class="topic-section" data-topic="operators">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 05</span>
+            <h2 class="topic-title">Operators in C</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('operators')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Operators are special symbols that instruct the compiler to perform specific mathematical, logical, or relational operations.
+        </p>
+
+        <!-- 1. Arithmetic Operators -->
+        <h3 class="subheading">1. Arithmetic Operators (Math)</h3>
+        <p class="text-p">Perform basic mathematical operations on numbers.</p>
+        <div class="table-wrap">
+          <table class="styled-table">
+            <thead>
+              <tr><th>Operator</th><th>Meaning</th><th>Simple Example</th><th>Result</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 3</code></td><td><code>13</code></td></tr>
+              <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 3</code></td><td><code>7</code></td></tr>
+              <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 3</code></td><td><code>30</code></td></tr>
+              <tr><td><code>/</code></td><td>Division (Quotient)</td><td><code>10 / 3</code></td><td><code>3</code> (integer drops decimal)</td></tr>
+              <tr><td><code>%</code></td><td>Modulus (Remainder)</td><td><code>10 % 3</code></td><td><code>1</code> (leftover remainder)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">arithmetic_operators.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> a = <span class="c-num">10</span>;
+    <span class="c-type">int</span> b = <span class="c-num">3</span>;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Addition:       10 + 3 = %d\n"</span>, a + b);
+    <span class="c-fn">printf</span>(<span class="c-str">"Subtraction:    10 - 3 = %d\n"</span>, a - b);
+    <span class="c-fn">printf</span>(<span class="c-str">"Multiplication: 10 * 3 = %d\n"</span>, a * b);
+    <span class="c-fn">printf</span>(<span class="c-str">"Division:       10 / 3 = %d\n"</span>, a / b);
+    <span class="c-fn">printf</span>(<span class="c-str">"Modulus:        10 %% 3 = %d\n"</span>, a % b);
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Addition:       10 + 3 = 13
+Subtraction:    10 - 3 = 7
+Multiplication: 10 * 3 = 30
+Division:       10 / 3 = 3
+Modulus:        10 % 3 = 1</div>
+        </div>
+
+        <!-- 2. Relational Operators -->
+        <h3 class="subheading">2. Relational Operators (Comparisons)</h3>
+        <p class="text-p">
+          Relational operators compare two values. In C, a comparison produces <strong>1</strong> for TRUE and <strong>0</strong> for FALSE.
+        </p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">relational_operators.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> x = <span class="c-num">20</span>;
+    <span class="c-type">int</span> y = <span class="c-num">10</span>;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x &gt; y?  %d\n"</span>, x &gt; y);
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x &lt; y?  %d\n"</span>, x &lt; y);
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x == y? %d\n"</span>, x == y);
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x != y? %d\n"</span>, x != y);
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Is x > y?  1
+Is x < y?  0
+Is x == y? 0
+Is x != y? 1</div>
+        </div>
+
+        <!-- 3. Logical Operators -->
+        <h3 class="subheading">3. Logical Operators</h3>
+        <p class="text-p">
+          Combine multiple conditions together: <code>&amp;&amp;</code> (AND), <code>||</code> (OR), and <code>!</code> (NOT).
+        </p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">logical_operators.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> age = <span class="c-num">20</span>;
+    <span class="c-type">int</span> hasId = <span class="c-num">1</span>;
+
+    <span class="c-key">if</span> (age &gt;= <span class="c-num">18</span> &amp;&amp; hasId == <span class="c-num">1</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Access Granted!\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Access Granted!</div>
+        </div>
+      </section>
+
+      <!-- Topic 06: Selection / Decision Statements -->
+      <section id="decisions" class="topic-section" data-topic="decisions">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 06</span>
+            <h2 class="topic-title">Selection: <code>if</code>, <code>if...else</code>, Ladder &amp; Nested <code>if</code></h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('decisions')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Decision statements control which path of code executes based on whether a condition is true or false.
+        </p>
+
+        <!-- 1. Simple if -->
+        <h3 class="subheading">1. The Simple <code>if</code> Statement (One Path)</h3>
+        <p class="text-p">Executes code only if the condition evaluates to true.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">if_example.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> marks = <span class="c-num">65</span>;
+
+    <span class="c-key">if</span> (marks &gt;= <span class="c-num">35</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Congratulations! You passed.\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <!-- 2. if...else -->
+        <h3 class="subheading">2. The <code>if...else</code> Statement (Two Paths)</h3>
+        <div class="analogy-box">
+          <strong>Analogy — A Fork in the Road:</strong><br>
+          If you are 18 or older (<code>age &gt;= 18</code>), you take the "Eligible to Vote" path. Otherwise, you must take the "Too Young" path. You can never take both paths at the same time.
+        </div>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">if_else_example.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> age = <span class="c-num">19</span>;
+
+    <span class="c-key">if</span> (age &gt;= <span class="c-num">18</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"You are eligible to vote!\n"</span>);
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"You are too young to vote.\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">You are eligible to vote!</div>
+        </div>
+
+        <!-- 3. else if ladder -->
+        <h3 class="subheading">3. The <code>else if</code> Ladder (Multiple Choices)</h3>
+        <p class="text-p">Use chained conditions when evaluating more than two possible outcomes.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">else_if_ladder.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> num = <span class="c-num">0</span>;
+
+    <span class="c-key">if</span> (num &gt; <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"The number is positive.\n"</span>);
+    } <span class="c-key">else if</span> (num &lt; <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"The number is negative.\n"</span>);
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"The number is zero.\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">The number is zero.</div>
+        </div>
+
+        <!-- 4. Nested if -->
+        <h3 class="subheading">4. Nested <code>if</code> Statements (Condition Inside Condition)</h3>
+        <div class="analogy-box">
+          <strong>Analogy — Security Checkpoints:</strong><br>
+          To enter the secure lab, you first swipe your main building card (<strong>Outer if</strong>). Only if you are inside the building can you enter your PIN code at the inner door (<strong>Inner if</strong>).
+        </div>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">nested_if_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> marks = <span class="c-num">82</span>;
+
+    <span class="c-key">if</span> (marks &gt;= <span class="c-num">35</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Result: Passed!\n"</span>);
+
+        <span class="c-key">if</span> (marks &gt;= <span class="c-num">75</span>) {
+            <span class="c-fn">printf</span>(<span class="c-str">"Honors: Distinction!\n"</span>);
+        } <span class="c-key">else</span> {
+            <span class="c-fn">printf</span>(<span class="c-str">"Honors: Regular Pass.\n"</span>);
+        }
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"Result: Failed.\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Result: Passed!
+Honors: Distinction!</div>
+        </div>
+      </section>
+
+      <!-- Topic 07: Switch Statement -->
+      <section id="switch" class="topic-section" data-topic="switch">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 07</span>
+            <h2 class="topic-title">The <code>switch</code> Statement</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('switch')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A <code>switch</code> statement tests a single variable against a list of constant values (<code>case</code>). The <code>break</code> keyword exits the switch immediately, and <code>default</code> runs if no match is found.
+        </p>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">switch_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> day = <span class="c-num">2</span>;
+
+    <span class="c-key">switch</span>(day) {
+        <span class="c-key">case</span> <span class="c-num">1</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"Monday\n"</span>);
+            <span class="c-key">break</span>;
+        <span class="c-key">case</span> <span class="c-num">2</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"Tuesday\n"</span>);
+            <span class="c-key">break</span>;
+        <span class="c-key">case</span> <span class="c-num">3</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"Wednesday\n"</span>);
+            <span class="c-key">break</span>;
+        <span class="c-key">default</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"Other day\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Tuesday</div>
+        </div>
+      </section>
+
+      <!-- Topic 08: Iterative Statements / Loops -->
+      <section id="loops" class="topic-section" data-topic="loops">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 08</span>
+            <h2 class="topic-title">Iterative Statements: <code>for</code>, <code>while</code>, <code>do...while</code> &amp; Nested Loops</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('loops')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A loop repeatedly executes a block of code while a condition remains true.
+        </p>
+
+        <!-- 1. for loop -->
+        <h3 class="subheading">1. The <code>for</code> Loop (Count-Controlled)</h3>
+        <p class="text-p">Best when you know in advance how many times the loop should run.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">for_loop.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">5</span>; i++) {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">1 2 3 4 5 </div>
+        </div>
+
+        <!-- 2. while loop -->
+        <h3 class="subheading">2. The <code>while</code> Loop (Entry-Controlled)</h3>
+        <p class="text-p">Evaluates the condition <em>before</em> running the body.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">while_loop.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> count = <span class="c-num">3</span>;
+    <span class="c-key">while</span> (count &gt; <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d... "</span>, count);
+        count--;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Go!\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">3... 2... 1... Go!</div>
+        </div>
+
+        <!-- 3. do...while loop -->
+        <h3 class="subheading">3. The <code>do...while</code> Loop (Exit-Controlled)</h3>
+        <p class="text-p">
+          Unlike <code>while</code>, a <code>do...while</code> loop executes its body <strong>at least once</strong> before evaluating the condition at the bottom.
+        </p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">do_while_loop.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> k = <span class="c-num">1</span>;
+    <span class="c-key">do</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"Step %d\n"</span>, k);
+        k++;
+    } <span class="c-key">while</span> (k &lt;= <span class="c-num">3</span>);
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Step 1
+Step 2
+Step 3</div>
+        </div>
+
+        <!-- 4. Nested loops -->
+        <h3 class="subheading">4. Nested Loops (Loop Inside Loop)</h3>
+        <p class="text-p">Nested loops are ideal for working with grids, patterns, and matrices.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">nested_loops_pattern.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">for</span> (<span class="c-type">int</span> row = <span class="c-num">1</span>; row &lt;= <span class="c-num">3</span>; row++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> col = <span class="c-num">1</span>; col &lt;= <span class="c-num">3</span>; col++) {
+            <span class="c-fn">printf</span>(<span class="c-str">"* "</span>);
+        }
+        <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">* * * 
+* * * 
+* * * </div>
+        </div>
+      </section>
+
+      <!-- Topic 09: Jump Statements -->
+      <section id="jump" class="topic-section" data-topic="jump">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 09</span>
+            <h2 class="topic-title">Jump Statements: <code>break</code> &amp; <code>continue</code></h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('jump')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Jump statements alter the natural sequential flow of execution inside loops and switches.
+        </p>
+        <ul class="text-p" style="padding-left: 1.25rem;">
+          <li><code>break</code>: Immediately terminates and exits the loop entirely.</li>
+          <li><code>continue</code>: Skips the remaining code in the current iteration and jumps to the next iteration.</li>
+        </ul>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">jump_statements.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Testing continue (skips 3):\n"</span>);
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (i == <span class="c-num">3</span>) <span class="c-key">continue</span>;
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+
+    <span class="c-fn">printf</span>(<span class="c-str">"\nTesting break (stops at 3):\n"</span>);
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (i == <span class="c-num">3</span>) <span class="c-key">break</span>;
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Testing continue (skips 3):
+1 2 4 5 
+Testing break (stops at 3):
+1 2 </div>
+        </div>
+      </section>
+
+      <!-- Topic 10: 1-D Arrays -->
+      <section id="arrays1d" class="topic-section" data-topic="arrays1d">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 10</span>
+            <h2 class="topic-title">1-D Arrays (Single Dimension)</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('arrays1d')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          An <strong>array</strong> is a collection of elements of the same data type stored at contiguous memory locations. In C, array indexes start at <strong>0</strong>.
+        </p>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">array_1d_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> marks[<span class="c-num">5</span>] = {<span class="c-num">80</span>, <span class="c-num">75</span>, <span class="c-num">90</span>, <span class="c-num">85</span>, <span class="c-num">70</span>};
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Student %d: %d marks\n"</span>, i + <span class="c-num">1</span>, marks[i]);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Student 1: 80 marks
+Student 2: 75 marks
+Student 3: 90 marks
+Student 4: 85 marks
+Student 5: 70 marks</div>
+        </div>
+      </section>
+
+      <!-- Topic 11: 2-D Arrays -->
+      <section id="arrays2d" class="topic-section" data-topic="arrays2d">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 11</span>
+            <h2 class="topic-title">2-D Arrays (Matrices)</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('arrays2d')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A <strong>2-D array</strong> organizes elements into rows and columns, making it the standard representation for mathematical matrices.
+        </p>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">matrix_2d.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> matrix[<span class="c-num">2</span>][<span class="c-num">3</span>] = {
+        {<span class="c-num">1</span>, <span class="c-num">2</span>, <span class="c-num">3</span>},
+        {<span class="c-num">4</span>, <span class="c-num">5</span>, <span class="c-num">6</span>}
+    };
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> r = <span class="c-num">0</span>; r &lt; <span class="c-num">2</span>; r++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> c = <span class="c-num">0</span>; c &lt; <span class="c-num">3</span>; c++) {
+            <span class="c-fn">printf</span>(<span class="c-str">"%d\t"</span>, matrix[r][c]);
+        }
+        <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    }
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">1	2	3	
+4	5	6	</div>
+        </div>
+      </section>
+
+      <!-- Topic 12: Searching in Arrays -->
+      <section id="searching" class="topic-section" data-topic="searching">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 12</span>
+            <h2 class="topic-title">Searching in Arrays: Linear &amp; Binary Search</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('searching')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          Searching is the process of locating a specific target value inside an array.
+        </p>
+
+        <!-- Linear Search -->
+        <h3 class="subheading">1. Linear Search (Sequential Check)</h3>
+        <p class="text-p">Checks every element one by one from left to right. Works on any array.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">linear_search.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">5</span>] = {<span class="c-num">10</span>, <span class="c-num">20</span>, <span class="c-num">30</span>, <span class="c-num">40</span>, <span class="c-num">50</span>};
+    <span class="c-type">int</span> target = <span class="c-num">30</span>;
+    <span class="c-type">int</span> found = -<span class="c-num">1</span>;
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (arr[i] == target) {
+            found = i;
+            <span class="c-key">break</span>;
+        }
+    }
+
+    <span class="c-key">if</span> (found != -<span class="c-num">1</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Element %d found at index %d\n"</span>, target, found);
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"Element not found\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Element 30 found at index 2</div>
+        </div>
+
+        <!-- Binary Search -->
+        <h3 class="subheading">2. Binary Search (Divide &amp; Conquer)</h3>
+        <p class="text-p">
+          Requires a <strong>sorted array</strong>. It repeatedly compares the target against the middle element, eliminating half of the remaining elements at each step.
+        </p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">binary_search.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">5</span>] = {<span class="c-num">10</span>, <span class="c-num">20</span>, <span class="c-num">30</span>, <span class="c-num">40</span>, <span class="c-num">50</span>};
+    <span class="c-type">int</span> low = <span class="c-num">0</span>, high = <span class="c-num">4</span>, target = <span class="c-num">40</span>, index = -<span class="c-num">1</span>;
+
+    <span class="c-key">while</span> (low &lt;= high) {
+        <span class="c-type">int</span> mid = low + (high - low) / <span class="c-num">2</span>;
+
+        <span class="c-key">if</span> (arr[mid] == target) {
+            index = mid;
+            <span class="c-key">break</span>;
+        } <span class="c-key">else if</span> (arr[mid] &lt; target) {
+            low = mid + <span class="c-num">1</span>;
+        } <span class="c-key">else</span> {
+            high = mid - <span class="c-num">1</span>;
+        }
+    }
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Target %d found at index %d\n"</span>, target, index);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Target 40 found at index 3</div>
+        </div>
+      </section>
+
+      <!-- Topic 13: Strings in C -->
+      <section id="strings" class="topic-section" data-topic="strings">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 13</span>
+            <h2 class="topic-title">Strings in C</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('strings')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          C does not have a native <code>string</code> data type. Instead, a string is stored as an array of characters ending with a special null terminator character: <code>'\0'</code>.
+        </p>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">strings_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> platformName[] = <span class="c-str">"LearnForge"</span>;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Welcome to: %s\n"</span>, platformName);
+    <span class="c-fn">printf</span>(<span class="c-str">"First letter: %c\n"</span>, platformName[<span class="c-num">0</span>]);
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Welcome to: LearnForge
+First letter: L</div>
+        </div>
+      </section>
+
+      <!-- Topic 14: Functions -->
+      <section id="functions" class="topic-section" data-topic="functions">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 14</span>
+            <h2 class="topic-title">Functions in C</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('functions')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A <strong>function</strong> is a reusable block of code designed to perform a specific task. Instead of writing the same lines of code repeatedly, you define it once in a function and call it whenever needed.
+        </p>
+
+        <div class="analogy-box">
+          <strong>The Kitchen Machine Analogy:</strong><br>
+          Think of a function like a kitchen appliance:
+          <ul style="padding-left: 1.25rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.35rem;">
+            <li><strong>Parameters (Inputs):</strong> The raw ingredients dropped into the machine.</li>
+            <li><strong>Return Value (Output):</strong> What the machine outputs back to you.</li>
+            <li><strong><code>void</code>:</strong> Means "empty" or "nothing". When used as a return type, the function performs an action and returns no value.</li>
+          </ul>
+        </div>
+
+        <h3 class="subheading">The 4 Types of Functions in C</h3>
+        <p class="text-p">Every function in C falls into one of four categories based on parameters and return values:</p>
+
+        <!-- TYPE 1 -->
+        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-top: 1.5rem; margin-bottom: 0.4rem;">
+          Type 1: Without Parameters and Without Return Value
+        </h4>
+        <p class="text-p">Takes no data from <code>main()</code> and returns no result.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">type1_no_param_no_return.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">greet</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Welcome to LearnForge C Course!\n"</span>);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">greet</span>();
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Welcome to LearnForge C Course!</div>
+        </div>
+
+        <!-- TYPE 2 -->
+        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-top: 2rem; margin-bottom: 0.4rem;">
+          Type 2: Without Parameters and With Return Value
+        </h4>
+        <p class="text-p">Takes no input, but calculates or retrieves a value and returns it.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">type2_no_param_with_return.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">getPassMark</span>() {
+    <span class="c-type">int</span> pass = <span class="c-num">35</span>;
+    <span class="c-key">return</span> pass;
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> scoreNeeded = <span class="c-fn">getPassMark</span>();
+    <span class="c-fn">printf</span>(<span class="c-str">"Minimum passing mark is: %d\n"</span>, scoreNeeded);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Minimum passing mark is: 35</div>
+        </div>
+
+        <!-- TYPE 3 -->
+        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-top: 2rem; margin-bottom: 0.4rem;">
+          Type 3: With Parameters and Without Return Value
+        </h4>
+        <p class="text-p">Receives data to work on, performs an operation, and prints the result directly.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">type3_with_param_no_return.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">printSquare</span>(<span class="c-type">int</span> num) {
+    <span class="c-type">int</span> square = num * num;
+    <span class="c-fn">printf</span>(<span class="c-str">"The square of %d is: %d\n"</span>, num, square);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printSquare</span>(<span class="c-num">6</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">The square of 6 is: 36</div>
+        </div>
+
+        <!-- TYPE 4 -->
+        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary); margin-top: 2rem; margin-bottom: 0.4rem;">
+          Type 4: With Parameters and With Return Value
+        </h4>
+        <p class="text-p">Receives input values, computes a result, and sends the answer back to the caller.</p>
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">type4_with_param_with_return.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">addNumbers</span>(<span class="c-type">int</span> a, <span class="c-type">int</span> b) {
+    <span class="c-key">return</span> a + b;
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> total = <span class="c-fn">addNumbers</span>(<span class="c-num">10</span>, <span class="c-num">25</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Result of addition: %d\n"</span>, total);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Result of addition: 35</div>
+        </div>
+      </section>
+
+      <!-- Topic 15: Storage Classes -->
+      <section id="storage" class="topic-section" data-topic="storage">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 15</span>
+            <h2 class="topic-title">Storage Classes</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('storage')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A storage class defines the scope (visibility) and lifetime of a variable.
+        </p>
+
+        <div class="table-wrap">
+          <table class="styled-table">
+            <thead>
+              <tr><th>Keyword</th><th>Storage</th><th>Default Value</th><th>Scope</th><th>Lifetime</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>auto</code></td><td>RAM</td><td>Garbage</td><td>Local</td><td>Within block</td></tr>
+              <tr><td><code>static</code></td><td>RAM</td><td>Zero</td><td>Local</td><td>Until program ends</td></tr>
+              <tr><td><code>register</code></td><td>CPU Register</td><td>Garbage</td><td>Local</td><td>Within block</td></tr>
+              <tr><td><code>extern</code></td><td>RAM</td><td>Zero</td><td>Global</td><td>Until program ends</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">static_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">counterDemo</span>() {
+    <span class="c-key">static</span> <span class="c-type">int</span> count = <span class="c-num">0</span>;
+    count++;
+    <span class="c-fn">printf</span>(<span class="c-str">"Count: %d\n"</span>, count);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">counterDemo</span>();
+    <span class="c-fn">counterDemo</span>();
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Count: 1
+Count: 2</div>
+        </div>
+      </section>
+
+      <!-- Topic 16: Introduction to Pointers -->
+      <section id="pointers" class="topic-section" data-topic="pointers">
+        <div class="topic-header-row">
+          <div>
+            <span class="topic-badge">Module 16</span>
+            <h2 class="topic-title">Introduction to Pointers</h2>
+          </div>
+          <button class="complete-toggle-btn" onclick="toggleComplete('pointers')">Mark as Complete &#10003;</button>
+        </div>
+        <p class="text-p">
+          A <strong>pointer</strong> is a variable that stores the memory address of another variable.
+        </p>
+        <ul class="text-p" style="padding-left: 1.25rem;">
+          <li><code>&amp;</code> (Address-of operator): Retrieves the memory address of a variable.</li>
+          <li><code>*</code> (Dereference operator): Accesses the value stored at that memory address.</li>
+        </ul>
+
+        <div class="code-card">
+          <div class="code-header">
+            <div class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></div>
+            <span class="file-name">pointer_intro.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> age = <span class="c-num">20</span>;
+    <span class="c-type">int</span> *ptr = &amp;age;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Value of age: %d\n"</span>, age);
+    <span class="c-fn">printf</span>(<span class="c-str">"Value via *ptr: %d\n"</span>, *ptr);
+
+    *ptr = <span class="c-num">25</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"New value of age: %d\n"</span>, age);
+
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal-box">
+          <div class="terminal-label">Terminal Output:</div>
+          <div class="term-output">Value of age: 20
+Value via *ptr: 20
+New value of age: 25</div>
+        </div>
+      </section>
+
+      <!-- Project Development Status Card -->
+      <div class="dev-status-card">
+        <div class="dev-status-badge">
+          <span class="dev-pulse-dot" aria-hidden="true"></span>
+          <span>Project Under Active Development</span>
+        </div>
+        <p class="dev-status-text">
+          <strong>Notice:</strong> LearnForge is an ongoing student learning initiative currently under active development. Explanations, code walkthroughs, and practice problems are continually being refined and expanded.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">LearnForge</p>
+      <p>&copy; 2026 LearnForge • Student Learning Platform • Learn • Practice • Build</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       LIGHTWEIGHT CLIENT-SIDE JAVASCRIPT
+       ========================================================================== -->
+  <script>
+    const TOTAL_TOPICS = 16;
+    let completedTopics = new Set();
+
+    function initProgress() {
+      try {
+        const saved = localStorage.getItem('learnforge_c_progress');
+        if (saved) {
+          completedTopics = new Set(JSON.parse(saved));
+        }
+      } catch(e) {
+        console.warn('localStorage not available', e);
+      }
+      updateProgressUI();
+    }
+
+    function toggleComplete(topicId) {
+      if (completedTopics.has(topicId)) {
+        completedTopics.delete(topicId);
+      } else {
+        completedTopics.add(topicId);
+      }
+
+      try {
+        localStorage.setItem('learnforge_c_progress', JSON.stringify([...completedTopics]));
+      } catch(e) {}
+
+      updateProgressUI();
+    }
+
+    function updateProgressUI() {
+      const count = completedTopics.size;
+      const percentage = Math.round((count / TOTAL_TOPICS) * 100);
+
+      const bar = document.getElementById('progressBar');
+      const text = document.getElementById('progressText');
+      if (bar) bar.style.width = percentage + '%';
+      if (text) text.textContent = `${count} / ${TOTAL_TOPICS} Topics (${percentage}%)`;
+
+      document.querySelectorAll('.topic-section[data-topic]').forEach(section => {
+        const tid = section.getAttribute('data-topic');
+        const btn = section.querySelector('.complete-toggle-btn');
+        if (completedTopics.has(tid)) {
+          section.classList.add('topic-done');
+          if (btn) {
+            btn.classList.add('is-completed');
+            btn.innerHTML = 'Completed &#10003;';
+          }
+        } else {
+          section.classList.remove('topic-done');
+          if (btn) {
+            btn.classList.remove('is-completed');
+            btn.innerHTML = 'Mark as Complete &#10003;';
+          }
+        }
+      });
+
+      document.querySelectorAll('#tocList li, #mobileTocList li').forEach(li => {
+        const link = li.querySelector('a');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const tid = href.replace('#', '');
+        if (completedTopics.has(tid)) {
+          li.classList.add('toc-item-done');
+        } else {
+          li.classList.remove('toc-item-done');
+        }
+      });
+    }
+
+    function copyCode(btn) {
+      const codeCard = btn.closest('.code-card');
+      if (!codeCard) return;
+      const codeElem = codeCard.querySelector('code');
+      if (!codeElem) return;
+
+      const text = codeElem.innerText || codeElem.textContent;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showCopiedState(btn)).catch(() => fallbackCopy(text, btn));
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopiedState(btn);
+      } catch(e) {
+        console.error('Copy failed', e);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopiedState(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.style.backgroundColor = 'var(--accent-success)';
+      btn.style.color = '#030712';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+      }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initProgress();
+
+      const navToggle = document.getElementById('navToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+
+      if (navToggle && mobileMenu) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.contains('is-open');
+          mobileMenu.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            mobileMenu.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

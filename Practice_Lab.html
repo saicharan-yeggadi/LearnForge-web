@@ -1,0 +1,3211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>C Programming Practice Lab — LearnForge</title>
+  <meta name="description" content="48 interactive C programming challenges with progressive disclosure hints, verified code solutions, instant search, and difficulty filtering.">
+
+  <style>
+    :root {
+      --bg-base: #060913;
+      --bg-surface: #0c1222;
+      --bg-surface-elevated: #111a30;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(22, 34, 61, 0.88);
+      --bg-code: #050811;
+      --bg-term: #03060c;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --accent-primary: #38bdf8;
+      --accent-primary-hover: #0ea5e9;
+      --accent-indigo: #818cf8;
+      --accent-badge: #f59e0b;
+      --accent-badge-bg: rgba(245, 158, 11, 0.12);
+      --accent-success: #10b981;
+      --accent-success-bg: rgba(16, 185, 129, 0.12);
+      --accent-purple: #c084fc;
+      --accent-purple-bg: rgba(192, 132, 252, 0.12);
+
+      --syn-keyword: #f472b6;
+      --syn-type: #38bdf8;
+      --syn-string: #34d399;
+      --syn-number: #fbbf24;
+      --syn-fn: #60a5fa;
+      --syn-comment: #64748b;
+      --syn-header: #fb923c;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.4);
+
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --transition-speed: 0.2s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 70%),
+        radial-gradient(circle at 90% 25%, rgba(129, 140, 248, 0.07) 0%, transparent 45%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 64px;
+      background-color: rgba(6, 9, 19, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 1280px;
+      height: 100%;
+      margin-inline: auto;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.18rem;
+      color: var(--text-main);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(129, 140, 248, 0.15));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+    }
+
+    .nav-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .nav-breadcrumbs a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-breadcrumbs a:hover {
+      text-decoration: underline;
+    }
+
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .desktop-nav-links a {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-speed);
+    }
+
+    .desktop-nav-links a:hover,
+    .desktop-nav-links a.active-link {
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.08);
+    }
+
+    .hamburger-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .mobile-menu-drawer {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.25rem;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 999;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu-drawer.is-open {
+      display: flex;
+    }
+
+    .mobile-menu-drawer a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .practice-hero {
+      background: linear-gradient(180deg, rgba(12, 18, 34, 0.7) 0%, var(--bg-base) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 3rem 1.25rem 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin-inline: auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 4.5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 820px;
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Search & Filter Toolbar */
+    .search-filter-section {
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .search-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon-svg {
+      position: absolute;
+      left: 1rem;
+      width: 18px;
+      height: 18px;
+      color: var(--text-dim);
+      pointer-events: none;
+      transition: color var(--transition-speed);
+    }
+
+    .search-input-box {
+      width: 100%;
+      height: 48px;
+      padding: 0 2.85rem;
+      font-size: 0.95rem;
+      font-family: var(--font-stack);
+      color: var(--text-main);
+      background-color: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: all var(--transition-speed);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .search-input-box::placeholder {
+      color: var(--text-dim);
+    }
+
+    .search-input-box:focus {
+      border-color: var(--accent-primary);
+      background-color: rgba(22, 32, 50, 0.95);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15), 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 0.75rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .search-clear-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #ef4444;
+    }
+
+    .kbd-shortcut-hint {
+      position: absolute;
+      right: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .filter-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-right: 0.25rem;
+    }
+
+    .filter-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      user-select: none;
+    }
+
+    .filter-pill-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-pill-btn.is-active {
+      color: var(--text-main);
+      background-color: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-primary);
+    }
+
+    .filter-pill-btn[data-difficulty="easy"].is-active {
+      background-color: var(--accent-success-bg);
+      border-color: var(--accent-success);
+      color: #a7f3d0;
+    }
+
+    .filter-pill-btn[data-difficulty="medium"].is-active {
+      background-color: var(--accent-badge-bg);
+      border-color: var(--accent-badge);
+      color: #fde68a;
+    }
+
+    .filter-pill-btn[data-difficulty="hard"].is-active {
+      background-color: var(--accent-purple-bg);
+      border-color: var(--accent-purple);
+      color: #e9d5ff;
+    }
+
+    .pill-count-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .search-stats-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      padding-top: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .match-counter-text strong {
+      color: var(--accent-primary);
+      font-family: var(--font-mono);
+    }
+
+    .reset-filters-link {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .reset-filters-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Quick Scroll Chips */
+    .quick-nav-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      overflow-x: auto;
+      padding: 0.75rem 0 0.25rem;
+      scrollbar-width: thin;
+    }
+
+    .quick-chip {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.28rem 0.65rem;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all var(--transition-speed);
+    }
+
+    .quick-chip:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-main);
+      background-color: rgba(56, 189, 248, 0.08);
+    }
+
+    .lab-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 2.25rem;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    .toc-sidebar {
+      position: sticky;
+      top: 84px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .toc-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.85rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-speed);
+    }
+
+    .toc-link:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--accent-primary);
+    }
+
+    .content-stream {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .module-group {
+      scroll-margin-top: 80px;
+    }
+
+    .module-group-header {
+      margin-bottom: 1.35rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .module-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .module-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .practice-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .practice-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(14px);
+      transition: border-color var(--transition-speed);
+    }
+
+    .practice-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .card-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .challenge-id-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .badge-diff {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .badge-easy {
+      background-color: var(--accent-success-bg);
+      color: var(--accent-success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-med {
+      background-color: var(--accent-badge-bg);
+      color: var(--accent-badge);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-hard {
+      background-color: var(--accent-purple-bg);
+      color: var(--accent-purple);
+      border: 1px solid rgba(192, 132, 252, 0.3);
+    }
+
+    .question-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .question-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Collapsible Disclosure Boxes */
+    .disclosure-box {
+      margin-top: 0.75rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .disclosure-box.hint-box {
+      background-color: rgba(56, 189, 248, 0.04);
+      border-color: rgba(56, 189, 248, 0.2);
+    }
+
+    .disclosure-box.solution-box {
+      background-color: rgba(16, 185, 129, 0.04);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .disclosure-summary {
+      padding: 0.65rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .hint-box .disclosure-summary {
+      color: var(--accent-primary);
+    }
+
+    .solution-box .disclosure-summary {
+      color: var(--accent-success);
+    }
+
+    .disclosure-content {
+      padding: 1rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .code-card {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-top: 0.75rem;
+    }
+
+    .code-header {
+      background-color: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.45rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .file-name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .copy-btn {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+    }
+
+    .copy-btn:hover {
+      background-color: var(--accent-primary);
+      color: #030712;
+    }
+
+    .code-body {
+      padding: 1rem;
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .c-dir { color: var(--syn-header); font-weight: 600; }
+    .c-hdr { color: var(--syn-string); }
+    .c-type { color: var(--syn-type); font-weight: 600; }
+    .c-fn { color: var(--syn-fn); }
+    .c-key { color: var(--syn-keyword); font-weight: 600; }
+    .c-str { color: var(--syn-string); }
+    .c-num { color: var(--syn-number); }
+    .c-cmt { color: var(--syn-comment); font-style: italic; }
+
+    .terminal-box {
+      background-color: var(--bg-term);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      margin-top: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .terminal-label {
+      color: var(--accent-success);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .term-output {
+      color: #a7f3d0;
+      white-space: pre-wrap;
+    }
+
+    /* Zero Results State */
+    .no-results-card {
+      background-color: var(--bg-card);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .no-results-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+    }
+
+    .no-results-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .no-results-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .btn-reset-search {
+      padding: 0.55rem 1.25rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #030712;
+      background: var(--accent-primary);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      margin-top: 0.5rem;
+    }
+
+    .btn-reset-search:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
+    }
+
+    /* Project Status & Footer */
+    .dev-status-card {
+      background: linear-gradient(180deg, rgba(22, 34, 58, 0.7) 0%, rgba(12, 18, 34, 0.9) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 1.75rem;
+      text-align: center;
+      margin-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .dev-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+    }
+
+    .dev-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-primary);
+    }
+
+    .dev-status-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 640px;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-block: 2.5rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .lab-layout {
+        grid-template-columns: 1fr;
+        padding-inline: 1rem;
+      }
+      .toc-sidebar {
+        display: none;
+      }
+      .desktop-nav-links {
+        display: none;
+      }
+      .hamburger-btn {
+        display: inline-flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="nav-brand-group">
+        <a href="index.html" class="brand-logo" aria-label="LearnForge Home">
+          <div class="brand-logo-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+              <path d="M12 2v4"></path>
+              <path d="M12 18v4"></path>
+            </svg>
+          </div>
+          <span>LearnForge</span>
+        </a>
+        <div class="nav-breadcrumbs" aria-label="Breadcrumb trail">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <a href="c-basics.html">C Course</a>
+          <span>/</span>
+          <span>Practice Lab</span>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <ul class="desktop-nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="c-basics.html">C Course</a></li>
+          <li><a href="practice.html" class="active-link">Practice Lab</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+        <button class="hamburger-btn" id="navToggle" aria-label="Toggle Navigation" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu-drawer" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="c-basics.html">C Programming Course (16 Modules)</a>
+      <a href="practice.html">Practice Lab (48 Challenges)</a>
+      <a href="index.html#about">About LearnForge</a>
+    </div>
+  </header>
+
+  <header class="practice-hero">
+    <div class="container">
+      <span class="hero-badge">INTERACTIVE PRACTICE LAB</span>
+      <h1 class="hero-title">C Programming Practice Challenges</h1>
+      <p class="hero-desc">
+        48 curated challenges across all 16 modules. Try writing the solution on your own first. Need a nudge? Open the <strong>Hint</strong>. Ready to verify your code? Click <strong>Show Solution &amp; Code</strong>.
+      </p>
+
+      <!-- Instant Search & Filter Controls -->
+      <div class="search-filter-section">
+        <div class="search-bar-row">
+          <div class="search-input-wrapper">
+            <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="challengeSearchInput" 
+              class="search-input-box" 
+              placeholder="Search 48 challenges (e.g. pointer, matrix, swap, loop, string)..." 
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Search practice challenges"
+            >
+            <span class="kbd-shortcut-hint" id="kbdShortcut">/</span>
+            <button type="button" id="searchClearBtn" class="search-clear-btn" aria-label="Clear search">✕</button>
+          </div>
+        </div>
+
+        <div class="filter-pills-row">
+          <span class="filter-pill-label">Difficulty:</span>
+          <button type="button" class="filter-pill-btn is-active" data-difficulty="all">
+            <span>All</span>
+            <span class="pill-count-tag" id="countAll">48</span>
+          </button>
+          <button type="button" class="filter-pill-btn" data-difficulty="easy">
+            <span>Easy</span>
+            <span class="pill-count-tag" id="countEasy">0</span>
+          </button>
+          <button type="button" class="filter-pill-btn" data-difficulty="medium">
+            <span>Medium</span>
+            <span class="pill-count-tag" id="countMedium">0</span>
+          </button>
+          <button type="button" class="filter-pill-btn" data-difficulty="hard">
+            <span>Hard</span>
+            <span class="pill-count-tag" id="countHard">0</span>
+          </button>
+        </div>
+
+        <div class="search-stats-strip">
+          <span class="match-counter-text" id="matchCounterText">
+            Showing <strong id="matchCountNum">48</strong> of 48 challenges
+          </span>
+          <a href="#" id="resetFiltersLink" class="reset-filters-link">
+            <span>Reset filters</span>
+            <span>✕</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Scroll Chips -->
+      <div class="quick-nav-bar">
+        <a href="#p-intro" class="quick-chip">01. Intro</a>
+        <a href="#p-structure" class="quick-chip">02. Structure</a>
+        <a href="#p-variables" class="quick-chip">03. Variables</a>
+        <a href="#p-io" class="quick-chip">04. I/O</a>
+        <a href="#p-operators" class="quick-chip">05. Operators</a>
+        <a href="#p-decisions" class="quick-chip">06. Conditionals</a>
+        <a href="#p-switch" class="quick-chip">07. Switch</a>
+        <a href="#p-loops" class="quick-chip">08. Loops</a>
+        <a href="#p-jump" class="quick-chip">09. Jump</a>
+        <a href="#p-arrays1d" class="quick-chip">10. 1-D Arrays</a>
+        <a href="#p-arrays2d" class="quick-chip">11. 2-D Arrays</a>
+        <a href="#p-searching" class="quick-chip">12. Searching</a>
+        <a href="#p-strings" class="quick-chip">13. Strings</a>
+        <a href="#p-functions" class="quick-chip">14. Functions</a>
+        <a href="#p-storage" class="quick-chip">15. Storage</a>
+        <a href="#p-pointers" class="quick-chip">16. Pointers</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container lab-layout">
+    <aside class="toc-sidebar">
+      <div class="toc-title">Modules</div>
+      <ul class="toc-list">
+        <li><a href="#p-intro" class="toc-link">01. Introduction</a></li>
+        <li><a href="#p-structure" class="toc-link">02. Program Structure</a></li>
+        <li><a href="#p-variables" class="toc-link">03. Variables &amp; Types</a></li>
+        <li><a href="#p-io" class="toc-link">04. Input &amp; Output</a></li>
+        <li><a href="#p-operators" class="toc-link">05. Operators</a></li>
+        <li><a href="#p-decisions" class="toc-link">06. Selection</a></li>
+        <li><a href="#p-switch" class="toc-link">07. Switch Statement</a></li>
+        <li><a href="#p-loops" class="toc-link">08. Loops</a></li>
+        <li><a href="#p-jump" class="toc-link">09. Jump Statements</a></li>
+        <li><a href="#p-arrays1d" class="toc-link">10. 1-D Arrays</a></li>
+        <li><a href="#p-arrays2d" class="toc-link">11. 2-D Arrays</a></li>
+        <li><a href="#p-searching" class="toc-link">12. Searching</a></li>
+        <li><a href="#p-strings" class="toc-link">13. Strings</a></li>
+        <li><a href="#p-functions" class="toc-link">14. Functions</a></li>
+        <li><a href="#p-storage" class="toc-link">15. Storage Classes</a></li>
+        <li><a href="#p-pointers" class="toc-link">16. Pointers</a></li>
+      </ul>
+    </aside>
+
+    <div class="content-stream">
+      <!-- Dynamic Zero Results Card -->
+      <div id="noResultsBox" class="no-results-card" style="display: none;">
+        <div class="no-results-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h3 class="no-results-title">No matching challenges found</h3>
+        <p class="no-results-desc" id="noResultsQueryText">We couldn't find any challenges matching your search criteria.</p>
+        <button type="button" id="btnResetAll" class="btn-reset-search">Clear Search &amp; Filters</button>
+      </div>
+
+      <!-- Module 01 -->
+      <section id="p-intro" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 01</span>
+          <h2 class="module-title">Introduction to C</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-01</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Who created C and in which laboratory?</h3>
+            <p class="question-desc">Write a C program that prints the full name of the creator of C, the lab where it was designed, and the year it was developed.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Remember Dennis Ritchie developed C at AT&amp;T Bell Laboratories in 1972. Use three separate <code>printf()</code> statements or newlines.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">intro_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Creator: Dennis Ritchie\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Lab: AT&amp;T Bell Laboratories\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Year: 1972\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Creator: Dennis Ritchie
+Lab: AT&T Bell Laboratories
+Year: 1972</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-02</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Modern Systems Powered by C</h3>
+            <p class="question-desc">Print 3 major operating systems or software technologies that rely fundamentally on C for their kernel or engines.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Think of Linux kernel, Windows OS, macOS Darwin kernel, or embedded systems.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">intro_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"1. Linux Kernel\n2. Windows Operating System\n3. Microcontroller Firmware\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">1. Linux Kernel
+2. Windows Operating System
+3. Microcontroller Firmware</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-03</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">The 4 Compilation Stages</h3>
+            <p class="question-desc">Write a program that cleanly prints the 4 sequential phases a C program undergoes from source code to executable.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">The four stages are Preprocessing, Compilation, Assembly, and Linking.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">intro_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Stage 1: Preprocessing (.c -&gt; .i)\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Stage 2: Compiling (.i -&gt; .s)\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Stage 3: Assembly (.s -&gt; .o)\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Stage 4: Linking (.o -&gt; executable)\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Stage 1: Preprocessing (.c -> .i)
+Stage 2: Compiling (.i -> .s)
+Stage 3: Assembly (.s -> .o)
+Stage 4: Linking (.o -> executable)</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 02 -->
+      <section id="p-structure" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 02</span>
+          <h2 class="module-title">Structure of a C Program</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-04</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Multi-line Student Profile</h3>
+            <p class="question-desc">Write a structured C program with `#include &lt;stdio.h&gt;` and `int main()` that prints your college department and current semester on separate lines.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `\n` to introduce line breaks.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">struct_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Department: Computer Science\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Semester: 1st Year\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Department: Computer Science
+Semester: 1st Year</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-05</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Tabular Formatting with Escape Sequences</h3>
+            <p class="question-desc">Print a 2-column list of course subjects and room numbers using the horizontal tab escape sequence `\t`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Insert `\t` between the column values inside the `printf()` string.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">struct_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"SUBJECT\tROOM\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"C-Prog\tLab-1\n"</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Maths\tRoom-204\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">SUBJECT	ROOM
+C-Prog	Lab-1
+Maths	Room-204</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-06</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Print Quotation Marks and Slashes</h3>
+            <p class="question-desc">Print the exact text: `Dennis said, "C is simple, but not easy!" \ bell-labs` including quotes and backslash.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Escape double quotes with `\"` and backslashes with `\\`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">struct_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"Dennis said, \"C is simple, but not easy!\" \\ bell-labs\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Dennis said, "C is simple, but not easy!" \ bell-labs</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 03 -->
+      <section id="p-variables" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 03</span>
+          <h2 class="module-title">Variables, Constants &amp; Data Types</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-07</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Declare and Print 4 Primary Data Types</h3>
+            <p class="question-desc">Declare one `int`, `float`, `double`, and `char` variable. Initialize them and display all four using proper format specifiers.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `%d`, `%f`, `%lf`, and `%c` in `printf()`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">vars_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> roll = <span class="c-num">101</span>;
+    <span class="c-type">float</span> fee = <span class="c-num">4500.50</span>;
+    <span class="c-type">double</span> pi = <span class="c-num">3.1415926535</span>;
+    <span class="c-type">char</span> section = <span class="c-str">'A'</span>;
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Roll: %d, Fee: %.2f, Pi: %.8lf, Sec: %c\n"</span>, roll, fee, pi, section);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Roll: 101, Fee: 4500.50, Pi: 3.14159265, Sec: A</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-08</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Read-only Constant Definition</h3>
+            <p class="question-desc">Define a constant integer `MAX_ATTENDANCE = 100` using the `const` keyword. Attempting to mutate it must be prevented by the compiler.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Syntax: `const int MAX_ATTENDANCE = 100;`</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">vars_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">const</span> <span class="c-type">int</span> MAX_ATTENDANCE = <span class="c-num">100</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"Maximum Attendance Allowed: %d%%\n"</span>, MAX_ATTENDANCE);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Maximum Attendance Allowed: 100%</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-09</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Inspecting Memory Sizes with `sizeof`</h3>
+            <p class="question-desc">Write a program that uses `sizeof()` to print the exact number of bytes allocated for `char`, `int`, `float`, and `double` on your system.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `%zu` or `%lu` to print `sizeof(datatype)`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">vars_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"char: %zu byte\n"</span>, <span class="c-key">sizeof</span>(<span class="c-type">char</span>));
+    <span class="c-fn">printf</span>(<span class="c-str">"int: %zu bytes\n"</span>, <span class="c-key">sizeof</span>(<span class="c-type">int</span>));
+    <span class="c-fn">printf</span>(<span class="c-str">"float: %zu bytes\n"</span>, <span class="c-key">sizeof</span>(<span class="c-type">float</span>));
+    <span class="c-fn">printf</span>(<span class="c-str">"double: %zu bytes\n"</span>, <span class="c-key">sizeof</span>(<span class="c-type">double</span>));
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">char: 1 byte
+int: 4 bytes
+float: 4 bytes
+double: 8 bytes</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 04 -->
+      <section id="p-io" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 04</span>
+          <h2 class="module-title">Input &amp; Output (`printf` &amp; `scanf`)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-10</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">User Age Scanner</h3>
+            <p class="question-desc">Prompt the user to enter their age as an integer, store it using `scanf()`, and print: `You are [age] years old.`</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Remember the ampersand `&amp;age` in `scanf("%d", &amp;age)`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">io_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> age;
+    <span class="c-fn">printf</span>(<span class="c-str">"Enter age: "</span>);
+    <span class="c-fn">scanf</span>(<span class="c-str">"%d"</span>, &amp;age);
+    <span class="c-fn">printf</span>(<span class="c-str">"You are %d years old.\n"</span>, age);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Simulated Output:</div>
+                  <div class="term-output">Enter age: 19
+You are 19 years old.</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-11</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Reading Two Floats for Rectangle Area</h3>
+            <p class="question-desc">Read length and width from the user in a single `scanf()` call and print the computed area formatted to 2 decimal places.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `scanf("%f %f", &amp;l, &amp;w)` and `%.2f` in `printf()`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">io_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">float</span> length, width;
+    <span class="c-fn">printf</span>(<span class="c-str">"Enter length and width: "</span>);
+    <span class="c-fn">scanf</span>(<span class="c-str">"%f %f"</span>, &amp;length, &amp;width);
+    <span class="c-fn">printf</span>(<span class="c-str">"Area = %.2f\n"</span>, length * width);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Simulated Output:</div>
+                  <div class="term-output">Enter length and width: 5.5 3.0
+Area = 16.50</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-12</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Character Input and ASCII Code</h3>
+            <p class="question-desc">Read a single character from the keyboard and print both the character and its numeric ASCII decimal value.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Print the same `char` variable using `%c` (glyph) and `%d` (ASCII integer).</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">io_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> ch;
+    <span class="c-fn">printf</span>(<span class="c-str">"Enter a character: "</span>);
+    <span class="c-fn">scanf</span>(<span class="c-str">" %c"</span>, &amp;ch);
+    <span class="c-fn">printf</span>(<span class="c-str">"Character: '%c' | ASCII Code: %d\n"</span>, ch, ch);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Simulated Output:</div>
+                  <div class="term-output">Enter a character: A
+Character: 'A' | ASCII Code: 65</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 05 -->
+      <section id="p-operators" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 05</span>
+          <h2 class="module-title">Operators in C</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-13</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Quotient and Remainder Calculator</h3>
+            <p class="question-desc">Take two integers `dividend = 23` and `divisor = 5`. Calculate and display both integer division quotient and modulus remainder.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `/` for quotient and `%` for remainder.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ops_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> a = <span class="c-num">23</span>, b = <span class="c-num">5</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"Quotient: %d\n"</span>, a / b);
+    <span class="c-fn">printf</span>(<span class="c-str">"Remainder: %d\n"</span>, a % b);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Quotient: 4
+Remainder: 3</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-14</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Relational Boolean Output</h3>
+            <p class="question-desc">Compare two numbers `x = 15` and `y = 20`. Print the direct boolean integer results (1 or 0) for `x &lt; y` and `x == y`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Pass `(x &lt; y)` directly into `printf("%d", x &lt; y)`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ops_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> x = <span class="c-num">15</span>, y = <span class="c-num">20</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x &lt; y: %d\n"</span>, x &lt; y);
+    <span class="c-fn">printf</span>(<span class="c-str">"Is x == y: %d\n"</span>, x == y);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Is x &lt; y: 1
+Is x == y: 0</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-15</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Exam Eligibility with Logical AND</h3>
+            <p class="question-desc">Check if a student can sit for finals: `attendance &gt;= 75` AND `internalMarks &gt;= 20`. Print `1` for eligible, `0` otherwise.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Combine conditions using `&amp;&amp;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ops_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> attendance = <span class="c-num">80</span>;
+    <span class="c-type">int</span> internals = <span class="c-num">22</span>;
+    <span class="c-type">int</span> eligible = (attendance &gt;= <span class="c-num">75</span>) &amp;&amp; (internals &gt;= <span class="c-num">20</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Eligible (1=Yes, 0=No): %d\n"</span>, eligible);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Eligible (1=Yes, 0=No): 1</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 06 -->
+      <section id="p-decisions" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 06</span>
+          <h2 class="module-title">Selection (if, if...else, ladder, nested)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-16</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Even or Odd Checker</h3>
+            <p class="question-desc">Write an `if...else` program that reads an integer from the user and checks if it is Even or Odd using `% 2`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">If `num % 2 == 0`, it is Even; else it is Odd.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">cond_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> n = <span class="c-num">17</span>;
+    <span class="c-key">if</span> (n % <span class="c-num">2</span> == <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d is Even\n"</span>, n);
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d is Odd\n"</span>, n);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">17 is Odd</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-17</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Positive, Negative or Zero (`else if` ladder)</h3>
+            <p class="question-desc">Use an `else if` ladder to test a variable and print whether it is positive, negative, or exactly zero.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Check `n &gt; 0`, then `else if (n &lt; 0)`, then `else`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">cond_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> val = -<span class="c-num">8</span>;
+    <span class="c-key">if</span> (val &gt; <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Positive\n"</span>);
+    } <span class="c-key">else if</span> (val &lt; <span class="c-num">0</span>) {
+        <span class="c-fn">printf</span>(<span class="c-str">"Negative\n"</span>);
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"Zero\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Negative</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-18</span>
+              <span class="badge-diff badge-hard">Hard</span>
+            </div>
+            <h3 class="question-title">Nested `if` for Exam Distinction</h3>
+            <p class="question-desc">First check if student passed (`marks &gt;= 35`). If passed, check if `marks &gt;= 75` for Distinction, otherwise Regular Pass. If failed, print Failed.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Place an inner `if (marks &gt;= 75)` inside the outer `if (marks &gt;= 35)`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">cond_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> marks = <span class="c-num">84</span>;
+    <span class="c-key">if</span> (marks &gt;= <span class="c-num">35</span>) {
+        <span class="c-key">if</span> (marks &gt;= <span class="c-num">75</span>) {
+            <span class="c-fn">printf</span>(<span class="c-str">"Passed with Distinction!\n"</span>);
+        } <span class="c-key">else</span> {
+            <span class="c-fn">printf</span>(<span class="c-str">"Passed.\n"</span>);
+        }
+    } <span class="c-key">else</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"Failed.\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Passed with Distinction!</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 07 -->
+      <section id="p-switch" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 07</span>
+          <h2 class="module-title">Switch Statement</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-19</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Day of the Week Selector</h3>
+            <p class="question-desc">Take an integer from 1 to 7 and print the corresponding day name (1=Monday, 7=Sunday). Include a `default` case for invalid input.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Remember to end each `case` with `break;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">switch_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> day = <span class="c-num">3</span>;
+    <span class="c-key">switch</span> (day) {
+        <span class="c-key">case</span> <span class="c-num">1</span>: <span class="c-fn">printf</span>(<span class="c-str">"Monday\n"</span>); <span class="c-key">break</span>;
+        <span class="c-key">case</span> <span class="c-num">2</span>: <span class="c-fn">printf</span>(<span class="c-str">"Tuesday\n"</span>); <span class="c-key">break</span>;
+        <span class="c-key">case</span> <span class="c-num">3</span>: <span class="c-fn">printf</span>(<span class="c-str">"Wednesday\n"</span>); <span class="c-key">break</span>;
+        <span class="c-key">default</span>: <span class="c-fn">printf</span>(<span class="c-str">"Invalid Day\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Wednesday</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-20</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Mini Calculator with `char` Switch</h3>
+            <p class="question-desc">Take two numbers and an operator `+` or `-`. Use a `switch(op)` to perform and print the appropriate mathematical operation.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Character cases are written with single quotes: `case '+':`</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">switch_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> op = <span class="c-str">'+'</span>;
+    <span class="c-type">int</span> a = <span class="c-num">10</span>, b = <span class="c-num">4</span>;
+    <span class="c-key">switch</span> (op) {
+        <span class="c-key">case</span> <span class="c-str">'+'</span>: <span class="c-fn">printf</span>(<span class="c-str">"Result: %d\n"</span>, a + b); <span class="c-key">break</span>;
+        <span class="c-key">case</span> <span class="c-str">'-'</span>: <span class="c-fn">printf</span>(<span class="c-str">"Result: %d\n"</span>, a - b); <span class="c-key">break</span>;
+        <span class="c-key">default</span>: <span class="c-fn">printf</span>(<span class="c-str">"Unknown op\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Result: 14</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-21</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Vowel Detector with Fall-through</h3>
+            <p class="question-desc">Use deliberate case fall-through in a `switch` statement to detect if a character is a vowel (a, e, i, o, u).</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Stack cases together: `case 'a': case 'e': case 'i': ...` before a single print and `break;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">switch_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> ch = <span class="c-str">'e'</span>;
+    <span class="c-key">switch</span> (ch) {
+        <span class="c-key">case</span> <span class="c-str">'a'</span>: <span class="c-key">case</span> <span class="c-str">'e'</span>: <span class="c-key">case</span> <span class="c-str">'i'</span>: <span class="c-key">case</span> <span class="c-str">'o'</span>: <span class="c-key">case</span> <span class="c-str">'u'</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"%c is a Vowel\n"</span>, ch);
+            <span class="c-key">break</span>;
+        <span class="c-key">default</span>:
+            <span class="c-fn">printf</span>(<span class="c-str">"%c is a Consonant\n"</span>, ch);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">e is a Vowel</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 08 -->
+      <section id="p-loops" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 08</span>
+          <h2 class="module-title">Iterative Statements (Loops)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-22</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Print Numbers 1 to 10 (`for` loop)</h3>
+            <p class="question-desc">Write a basic `for` loop that prints numbers from 1 to 10 on a single line separated by spaces.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Syntax: `for (int i = 1; i &lt;= 10; i++)`</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">loop_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">10</span>; i++) {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">1 2 3 4 5 6 7 8 9 10 </div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-23</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Sum of First N Numbers (`while` loop)</h3>
+            <p class="question-desc">Use a `while` loop to accumulate and print the sum of integers from 1 up to `N = 5` (1 + 2 + 3 + 4 + 5 = 15).</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Keep a running `sum += i` and increment `i++` inside the loop.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">loop_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> i = <span class="c-num">1</span>, sum = <span class="c-num">0</span>;
+    <span class="c-key">while</span> (i &lt;= <span class="c-num">5</span>) {
+        sum += i;
+        i++;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Sum = %d\n"</span>, sum);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Sum = 15</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-24</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Countdown with `do...while`</h3>
+            <p class="question-desc">Demonstrate an exit-controlled `do...while` loop that counts down from 3 to 1 and then prints `Blast off!`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Remember that `do...while` terminates with a semicolon `;` after the `while(condition)`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">loop_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> count = <span class="c-num">3</span>;
+    <span class="c-key">do</span> {
+        <span class="c-fn">printf</span>(<span class="c-str">"%d... "</span>, count);
+        count--;
+    } <span class="c-key">while</span> (count &gt; <span class="c-num">0</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Blast off!\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">3... 2... 1... Blast off!</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 09 -->
+      <section id="p-jump" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 09</span>
+          <h2 class="module-title">Jump Statements (`break` &amp; `continue`)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-25</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Early Loop Termination with `break`</h3>
+            <p class="question-desc">Run a loop from 1 to 10, but terminate it immediately when the counter hits 5 using `break`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Inside the loop: `if (i == 5) break;`</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">jump_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">10</span>; i++) {
+        <span class="c-key">if</span> (i == <span class="c-num">5</span>) <span class="c-key">break</span>;
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">1 2 3 4 </div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-26</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Skip Specific Number with `continue`</h3>
+            <p class="question-desc">Print numbers from 1 to 5, but skip number 3 using the `continue` keyword.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">`if (i == 3) continue;` before the `printf()`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">jump_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (i == <span class="c-num">3</span>) <span class="c-key">continue</span>;
+        <span class="c-fn">printf</span>(<span class="c-str">"%d "</span>, i);
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">1 2 4 5 </div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-27</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Sum Only Positive Numbers</h3>
+            <p class="question-desc">Iterate through an array containing positive and negative numbers. Use `continue` to skip any negative value and print the sum of positives.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">If `arr[i] &lt; 0`, trigger `continue;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">jump_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> vals[<span class="c-num">5</span>] = {<span class="c-num">10</span>, -<span class="c-num">5</span>, <span class="c-num">20</span>, -<span class="c-num">2</span>, <span class="c-num">15</span>};
+    <span class="c-type">int</span> posSum = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (vals[i] &lt; <span class="c-num">0</span>) <span class="c-key">continue</span>;
+        posSum += vals[i];
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Positive Sum = %d\n"</span>, posSum);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Positive Sum = 45</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 10 -->
+      <section id="p-arrays1d" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 10</span>
+          <h2 class="module-title">1-D Arrays</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-28</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Sum and Average of an Array</h3>
+            <p class="question-desc">Declare an array of 5 integers. Traverse it with a loop, compute the total sum, and calculate the floating-point average.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Typecast the sum to `(float)` when dividing by 5.0.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr1d_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">5</span>] = {<span class="c-num">10</span>, <span class="c-num">20</span>, <span class="c-num">30</span>, <span class="c-num">40</span>, <span class="c-num">50</span>};
+    <span class="c-type">int</span> sum = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+        sum += arr[i];
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Sum: %d | Avg: %.2f\n"</span>, sum, (<span class="c-type">float</span>)sum / <span class="c-num">5</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Sum: 150 | Avg: 30.00</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-29</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Find the Maximum Element</h3>
+            <p class="question-desc">Initialize an integer array. Find and print the largest number present in the array.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Set `max = arr[0]`, then loop from index 1 to end updating `max` if `arr[i] &gt; max`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr1d_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> nums[<span class="c-num">5</span>] = {<span class="c-num">25</span>, <span class="c-num">80</span>, <span class="c-num">12</span>, <span class="c-num">95</span>, <span class="c-num">44</span>};
+    <span class="c-type">int</span> max = nums[<span class="c-num">0</span>];
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">1</span>; i &lt; <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (nums[i] &gt; max) max = nums[i];
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Maximum = %d\n"</span>, max);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Maximum = 95</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-30</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Count Even and Odd Elements</h3>
+            <p class="question-desc">Traverse an array and count how many elements are even and how many are odd.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Use `if (arr[i] % 2 == 0) evenCount++; else oddCount++;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr1d_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">6</span>] = {<span class="c-num">12</span>, <span class="c-num">7</span>, <span class="c-num">9</span>, <span class="c-num">14</span>, <span class="c-num">20</span>, <span class="c-num">5</span>};
+    <span class="c-type">int</span> evens = <span class="c-num">0</span>, odds = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">6</span>; i++) {
+        <span class="c-key">if</span> (arr[i] % <span class="c-num">2</span> == <span class="c-num">0</span>) evens++;
+        <span class="c-key">else</span> odds++;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Evens: %d | Odds: %d\n"</span>, evens, odds);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Evens: 3 | Odds: 3</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 11 -->
+      <section id="p-arrays2d" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 11</span>
+          <h2 class="module-title">2-D Arrays (Matrices)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-31</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">2x2 Matrix Display</h3>
+            <p class="question-desc">Initialize a 2x2 2D array and print it in matrix grid format with rows and columns using nested loops.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Outer loop runs through rows, inner loop runs through columns; print `\n` after inner loop ends.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr2d_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> mat[<span class="c-num">2</span>][<span class="c-num">2</span>] = {{<span class="c-num">1</span>, <span class="c-num">2</span>}, {<span class="c-num">3</span>, <span class="c-num">4</span>}};
+    <span class="c-key">for</span> (<span class="c-type">int</span> r = <span class="c-num">0</span>; r &lt; <span class="c-num">2</span>; r++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> c = <span class="c-num">0</span>; c &lt; <span class="c-num">2</span>; c++) {
+            <span class="c-fn">printf</span>(<span class="c-str">"%d\t"</span>, mat[r][c]);
+        }
+        <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">1	2	
+3	4	</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-32</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Sum of All Matrix Elements</h3>
+            <p class="question-desc">Declare a 2x3 matrix, iterate through all entries using nested loops, and print the total sum of all stored values.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Add each `mat[r][c]` to a `totalSum` accumulator variable.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr2d_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> m[<span class="c-num">2</span>][<span class="c-num">3</span>] = {{<span class="c-num">1</span>, <span class="c-num">2</span>, <span class="c-num">3</span>}, {<span class="c-num">4</span>, <span class="c-num">5</span>, <span class="c-num">6</span>}};
+    <span class="c-type">int</span> sum = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (<span class="c-type">int</span> r = <span class="c-num">0</span>; r &lt; <span class="c-num">2</span>; r++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> c = <span class="c-num">0</span>; c &lt; <span class="c-num">3</span>; c++) {
+            sum += m[r][c];
+        }
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Total Matrix Sum = %d\n"</span>, sum);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Total Matrix Sum = 21</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-33</span>
+              <span class="badge-diff badge-hard">Hard</span>
+            </div>
+            <h3 class="question-title">Matrix Transpose (Rows to Columns)</h3>
+            <p class="question-desc">Take a 2x3 matrix and compute its transpose into a 3x2 matrix where `trans[c][r] = orig[r][c]`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Swap indices: row `r` becomes column `r`, and column `c` becomes row `c`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">arr2d_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> a[<span class="c-num">2</span>][<span class="c-num">3</span>] = {{<span class="c-num">1</span>, <span class="c-num">2</span>, <span class="c-num">3</span>}, {<span class="c-num">4</span>, <span class="c-num">5</span>, <span class="c-num">6</span>}};
+    <span class="c-type">int</span> t[<span class="c-num">3</span>][<span class="c-num">2</span>];
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> r = <span class="c-num">0</span>; r &lt; <span class="c-num">2</span>; r++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> c = <span class="c-num">0</span>; c &lt; <span class="c-num">3</span>; c++) {
+            t[c][r] = a[r][c];
+        }
+    }
+
+    <span class="c-fn">printf</span>(<span class="c-str">"Transpose Matrix:\n"</span>);
+    <span class="c-key">for</span> (<span class="c-type">int</span> r = <span class="c-num">0</span>; r &lt; <span class="c-num">3</span>; r++) {
+        <span class="c-key">for</span> (<span class="c-type">int</span> c = <span class="c-num">0</span>; c &lt; <span class="c-num">2</span>; c++) {
+            <span class="c-fn">printf</span>(<span class="c-str">"%d\t"</span>, t[r][c]);
+        }
+        <span class="c-fn">printf</span>(<span class="c-str">"\n"</span>);
+    }
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Transpose Matrix:
+1	4	
+2	5	
+3	6	</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 12 -->
+      <section id="p-searching" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 12</span>
+          <h2 class="module-title">Searching (Linear &amp; Binary Search)</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-34</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Linear Search for Target</h3>
+            <p class="question-desc">Search for `target = 30` in an array `{10, 20, 30, 40, 50}` using Linear Search. Print index if found, else "Not Found".</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Loop from `i=0` to end. If `arr[i] == target`, record index and `break;`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">search_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">5</span>] = {<span class="c-num">10</span>, <span class="c-num">20</span>, <span class="c-num">30</span>, <span class="c-num">40</span>, <span class="c-num">50</span>};
+    <span class="c-type">int</span> target = <span class="c-num">30</span>, found = -<span class="c-num">1</span>;
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+        <span class="c-key">if</span> (arr[i] == target) {
+            found = i;
+            <span class="c-key">break</span>;
+        }
+    }
+    <span class="c-key">if</span> (found != -<span class="c-num">1</span>) <span class="c-fn">printf</span>(<span class="c-str">"Found at index %d\n"</span>, found);
+    <span class="c-key">else</span> <span class="c-fn">printf</span>(<span class="c-str">"Not Found\n"</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Found at index 2</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-35</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Target Occurrence Frequency</h3>
+            <p class="question-desc">Count how many times a specific number appears in an unsorted array using a linear scan.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Increment a `count` variable each time `arr[i] == target`. Do not `break` early.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">search_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">6</span>] = {<span class="c-num">5</span>, <span class="c-num">10</span>, <span class="c-num">5</span>, <span class="c-num">20</span>, <span class="c-num">5</span>, <span class="c-num">30</span>};
+    <span class="c-type">int</span> target = <span class="c-num">5</span>, count = <span class="c-num">0</span>;
+
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">6</span>; i++) {
+        <span class="c-key">if</span> (arr[i] == target) count++;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Frequency of %d is %d\n"</span>, target, count);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Frequency of 5 is 3</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-36</span>
+              <span class="badge-diff badge-hard">Hard</span>
+            </div>
+            <h3 class="question-title">Binary Search Implementation</h3>
+            <p class="question-desc">Implement Binary Search on a sorted array `{11, 22, 33, 44, 55, 66}` to locate target `44` using `low`, `high`, and `mid` pointers.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">`mid = low + (high - low) / 2`. If `target &gt; arr[mid]`, `low = mid + 1`; else `high = mid - 1`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">search_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> arr[<span class="c-num">6</span>] = {<span class="c-num">11</span>, <span class="c-num">22</span>, <span class="c-num">33</span>, <span class="c-num">44</span>, <span class="c-num">55</span>, <span class="c-num">66</span>};
+    <span class="c-type">int</span> target = <span class="c-num">44</span>, low = <span class="c-num">0</span>, high = <span class="c-num">5</span>, ans = -<span class="c-num">1</span>;
+
+    <span class="c-key">while</span> (low &lt;= high) {
+        <span class="c-type">int</span> mid = low + (high - low) / <span class="c-num">2</span>;
+        <span class="c-key">if</span> (arr[mid] == target) { ans = mid; <span class="c-key">break</span>; }
+        <span class="c-key">else if</span> (arr[mid] &lt; target) low = mid + <span class="c-num">1</span>;
+        <span class="c-key">else</span> high = mid - <span class="c-num">1</span>;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Binary Search: Target %d found at index %d\n"</span>, target, ans);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Binary Search: Target 44 found at index 3</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 13 -->
+      <section id="p-strings" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 13</span>
+          <h2 class="module-title">Strings in C</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-37</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Manual String Length Counter</h3>
+            <p class="question-desc">Determine the length of string `"LearnForge"` without using `strlen()` by counting characters until the null terminator `\0`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Loop `while (str[len] != '\0') len++;`</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">str_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> s[] = <span class="c-str">"LearnForge"</span>;
+    <span class="c-type">int</span> len = <span class="c-num">0</span>;
+    <span class="c-key">while</span> (s[len] != <span class="c-str">'\0'</span>) {
+        len++;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"String: \"%s\" | Length: %d\n"</span>, s, len);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">String: "LearnForge" | Length: 10</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-38</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Count Vowels in a String</h3>
+            <p class="question-desc">Write a program that scans a character array and counts the total number of vowels contained within it.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Inspect each character with an `if` statement matching `a, e, i, o, u` (both lower/upper).</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">str_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> text[] = <span class="c-str">"education"</span>;
+    <span class="c-type">int</span> vowels = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; text[i] != <span class="c-str">'\0'</span>; i++) {
+        <span class="c-type">char</span> c = text[i];
+        <span class="c-key">if</span> (c=='a'||c=='e'||c=='i'||c=='o'||c=='u') vowels++;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Total Vowels in \"%s\": %d\n"</span>, text, vowels);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Total Vowels in "education": 5</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-39</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Manual String Copy</h3>
+            <p class="question-desc">Copy string `src` into string `dest` manually character by character without using `strcpy()`, ensuring `\0` is preserved.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Assign `dest[i] = src[i]` inside loop, then manually append `dest[i] = '\0'`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">str_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">char</span> src[] = <span class="c-str">"Hello C"</span>;
+    <span class="c-type">char</span> dest[<span class="c-num">20</span>];
+    <span class="c-type">int</span> i = <span class="c-num">0</span>;
+    <span class="c-key">while</span> (src[i] != <span class="c-str">'\0'</span>) {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = <span class="c-str">'\0'</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"Copied: %s\n"</span>, dest);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Copied: Hello C</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 14 -->
+      <section id="p-functions" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 14</span>
+          <h2 class="module-title">Functions in C</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-40</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Type 1 Function (No Args, No Return)</h3>
+            <p class="question-desc">Create a function `void printBanner()` that prints a divider line and title banner. Call it twice from `main()`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Define `void printBanner()` with empty parameters and no `return` statement.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">fn_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">printBanner</span>() {
+    <span class="c-fn">printf</span>(<span class="c-str">"====================\n"</span>);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">printBanner</span>();
+    <span class="c-fn">printf</span>(<span class="c-str">"  LearnForge Lab\n"</span>);
+    <span class="c-fn">printBanner</span>();
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">====================
+  LearnForge Lab
+====================</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-41</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Type 4 Function (With Args &amp; Return)</h3>
+            <p class="question-desc">Write a function `int findMax(int a, int b)` that takes two integers and returns the greater value.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Return `(a &gt; b) ? a : b;` or use an `if...else` with `return`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">fn_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">findMax</span>(<span class="c-type">int</span> a, <span class="c-type">int</span> b) {
+    <span class="c-key">if</span> (a &gt; b) <span class="c-key">return</span> a;
+    <span class="c-key">return</span> b;
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> larger = <span class="c-fn">findMax</span>(<span class="c-num">45</span>, <span class="c-num">92</span>);
+    <span class="c-fn">printf</span>(<span class="c-str">"Larger value is: %d\n"</span>, larger);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Larger value is: 92</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-42</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Type 3 Function (With Args, No Return)</h3>
+            <p class="question-desc">Write a function `void checkParity(int num)` that receives a number and directly prints whether it is even or odd.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Takes `int num` as a parameter and prints inside the function body without returning.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">fn_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">checkParity</span>(<span class="c-type">int</span> num) {
+    <span class="c-key">if</span> (num % <span class="c-num">2</span> == <span class="c-num">0</span>) <span class="c-fn">printf</span>(<span class="c-str">"%d is Even\n"</span>, num);
+    <span class="c-key">else</span> <span class="c-fn">printf</span>(<span class="c-str">"%d is Odd\n"</span>, num);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">checkParity</span>(<span class="c-num">14</span>);
+    <span class="c-fn">checkParity</span>(<span class="c-num">21</span>);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">14 is Even
+21 is Odd</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 15 -->
+      <section id="p-storage" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 15</span>
+          <h2 class="module-title">Storage Classes</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-43</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Persistent State with `static`</h3>
+            <p class="question-desc">Create a function `countCalls()` using a `static int count = 0;` variable. Call it 3 times to observe that value persists across calls.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">`static` local variables retain their values across function invocations.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">stor_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">countCalls</span>() {
+    <span class="c-key">static</span> <span class="c-type">int</span> count = <span class="c-num">0</span>;
+    count++;
+    <span class="c-fn">printf</span>(<span class="c-str">"Call #%d\n"</span>, count);
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-fn">countCalls</span>();
+    <span class="c-fn">countCalls</span>();
+    <span class="c-fn">countCalls</span>();
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Call #1
+Call #2
+Call #3</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-44</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Default Value of `static` vs `auto`</h3>
+            <p class="question-desc">Demonstrate that an uninitialized `static` variable defaults automatically to 0, unlike an `auto` variable which contains garbage.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Declare `static int s;` and print it without giving it an explicit starting value.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">stor_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">static</span> <span class="c-type">int</span> staticVar;
+    <span class="c-fn">printf</span>(<span class="c-str">"Default static value: %d\n"</span>, staticVar);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Default static value: 0</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-45</span>
+              <span class="badge-diff badge-hard">Hard</span>
+            </div>
+            <h3 class="question-title">Fast Access with `register` Keyword</h3>
+            <p class="question-desc">Request CPU register storage for a loop counter using `register int i;` to illustrate optimization hints in C.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Syntax: `register int i;` Note that `&amp;i` cannot be taken because registers don't have RAM addresses.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">stor_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-key">register</span> <span class="c-type">int</span> i;
+    <span class="c-type">int</span> sum = <span class="c-num">0</span>;
+    <span class="c-key">for</span> (i = <span class="c-num">1</span>; i &lt;= <span class="c-num">100</span>; i++) {
+        sum += i;
+    }
+    <span class="c-fn">printf</span>(<span class="c-str">"Register-assisted loop sum: %d\n"</span>, sum);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Register-assisted loop sum: 5050</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Module 16 -->
+      <section id="p-pointers" class="module-group">
+        <div class="module-group-header">
+          <span class="module-tag">Module 16</span>
+          <h2 class="module-title">Pointers</h2>
+        </div>
+        <div class="practice-grid">
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-46</span>
+              <span class="badge-diff badge-easy">Easy</span>
+            </div>
+            <h3 class="question-title">Direct vs Indirect Value Access</h3>
+            <p class="question-desc">Declare `int n = 42;` and a pointer `int *ptr = &amp;n;`. Print the value of `n` directly and via dereference `*ptr`.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">`*ptr` dereferences the address to get the stored integer.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ptr_ch1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> n = <span class="c-num">42</span>;
+    <span class="c-type">int</span> *ptr = &amp;n;
+    <span class="c-fn">printf</span>(<span class="c-str">"Direct value: %d\n"</span>, n);
+    <span class="c-fn">printf</span>(<span class="c-str">"Via *ptr: %d\n"</span>, *ptr);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Direct value: 42
+Via *ptr: 42</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-47</span>
+              <span class="badge-diff badge-med">Medium</span>
+            </div>
+            <h3 class="question-title">Modifying a Variable via Pointer</h3>
+            <p class="question-desc">Mutate the value of variable `balance = 500` to `1000` using only its pointer `*pBalance = 1000;`. Print the updated value.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Assign to `*pBalance` on the left side of the assignment operator.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ptr_ch2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> balance = <span class="c-num">500</span>;
+    <span class="c-type">int</span> *p = &amp;balance;
+    *p = <span class="c-num">1000</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"New Balance: $%d\n"</span>, balance);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">New Balance: $1000</div>
+                </div>
+              </div>
+            </details>
+          </article>
+
+          <article class="practice-card">
+            <div class="card-meta-row">
+              <span class="challenge-id-tag">CH-48</span>
+              <span class="badge-diff badge-hard">Hard</span>
+            </div>
+            <h3 class="question-title">Swap Two Numbers (Call by Reference)</h3>
+            <p class="question-desc">Write a function `void swap(int *a, int *b)` that swaps two integers in `main()` using their pointers and a temporary variable.</p>
+            <details class="disclosure-box hint-box">
+              <summary class="disclosure-summary">💡 Show Hint</summary>
+              <div class="disclosure-content">Pass memory addresses with `swap(&amp;x, &amp;y)` and dereference inside `swap`.</div>
+            </details>
+            <details class="disclosure-box solution-box">
+              <summary class="disclosure-summary">💻 Show Code Solution</summary>
+              <div class="disclosure-content">
+                <div class="code-card">
+                  <div class="code-header"><span class="file-name">ptr_ch3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                  <pre class="code-body"><code><span class="c-dir">#include</span> <span class="c-hdr">&lt;stdio.h&gt;</span>
+
+<span class="c-type">void</span> <span class="c-fn">swap</span>(<span class="c-type">int</span> *a, <span class="c-type">int</span> *b) {
+    <span class="c-type">int</span> temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    <span class="c-type">int</span> x = <span class="c-num">10</span>, y = <span class="c-num">20</span>;
+    <span class="c-fn">printf</span>(<span class="c-str">"Before: x=%d, y=%d\n"</span>, x, y);
+    <span class="c-fn">swap</span>(&amp;x, &amp;y);
+    <span class="c-fn">printf</span>(<span class="c-str">"After:  x=%d, y=%d\n"</span>, x, y);
+    <span class="c-key">return</span> <span class="c-num">0</span>;
+}</code></pre>
+                </div>
+                <div class="terminal-box">
+                  <div class="terminal-label">Terminal Output:</div>
+                  <div class="term-output">Before: x=10, y=20
+After:  x=20, y=10</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- Active Development Status Card -->
+      <div class="dev-status-card">
+        <div class="dev-status-badge">
+          <span class="dev-pulse-dot" aria-hidden="true"></span>
+          <span>Project Under Active Development</span>
+        </div>
+        <p class="dev-status-text">
+          <strong>Notice:</strong> LearnForge is an evolving student learning platform. We are continuously refining practice challenges, adding test cases, and preparing new interactive programming tracks.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">LearnForge</p>
+      <p>&copy; 2026 LearnForge • Student Learning Platform • Learn • Practice • Build</p>
+    </div>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const codeCard = btn.closest('.code-card');
+      if (!codeCard) return;
+      const codeElem = codeCard.querySelector('code');
+      if (!codeElem) return;
+
+      const text = codeElem.innerText || codeElem.textContent;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showCopiedState(btn)).catch(() => fallbackCopy(text, btn));
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopiedState(btn);
+      } catch(e) {
+        console.error('Copy failed', e);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopiedState(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.style.backgroundColor = 'var(--accent-success)';
+      btn.style.color = '#030712';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+      }, 2000);
+    }
+
+    /* Live Instant Search & Filter Engine */
+    function initSearchAndFilter() {
+      const searchInput = document.getElementById('challengeSearchInput');
+      const clearBtn = document.getElementById('searchClearBtn');
+      const kbdHint = document.getElementById('kbdShortcut');
+      const filterPills = document.querySelectorAll('.filter-pill-btn');
+      const matchCountNum = document.getElementById('matchCountNum');
+      const resetLink = document.getElementById('resetFiltersLink');
+      const noResultsBox = document.getElementById('noResultsBox');
+      const noResultsQueryText = document.getElementById('noResultsQueryText');
+      const btnResetAll = document.getElementById('btnResetAll');
+
+      const allCards = Array.from(document.querySelectorAll('.practice-card'));
+      const allModuleGroups = Array.from(document.querySelectorAll('.module-group'));
+      const totalChallenges = allCards.length;
+
+      let currentQuery = '';
+      let currentDifficulty = 'all';
+
+      // Pre-index cards for instantaneous substring matching
+      const cardIndex = allCards.map(card => {
+        const diffBadge = card.querySelector('.badge-diff');
+        let diff = 'easy';
+        if (diffBadge) {
+          if (diffBadge.classList.contains('badge-med')) diff = 'medium';
+          else if (diffBadge.classList.contains('badge-hard')) diff = 'hard';
+          else diff = 'easy';
+        }
+
+        const parentGroup = card.closest('.module-group');
+        const moduleTitle = parentGroup ? (parentGroup.querySelector('.module-title')?.textContent || '') : '';
+        const cardText = card.textContent.toLowerCase();
+
+        return {
+          cardElement: card,
+          parentGroup: parentGroup,
+          difficulty: diff,
+          searchIndex: (moduleTitle + ' ' + cardText).toLowerCase()
+        };
+      });
+
+      // Calculate and render actual difficulty counts dynamically
+      const countEasy = cardIndex.filter(c => c.difficulty === 'easy').length;
+      const countMedium = cardIndex.filter(c => c.difficulty === 'medium').length;
+      const countHard = cardIndex.filter(c => c.difficulty === 'hard').length;
+
+      document.getElementById('countAll').textContent = totalChallenges;
+      document.getElementById('countEasy').textContent = countEasy;
+      document.getElementById('countMedium').textContent = countMedium;
+      document.getElementById('countHard').textContent = countHard;
+
+      function applyFilters() {
+        const query = currentQuery.trim().toLowerCase();
+        let visibleCount = 0;
+        const visibleGroups = new Set();
+
+        cardIndex.forEach(item => {
+          const matchesDiff = (currentDifficulty === 'all') || (item.difficulty === currentDifficulty);
+          const matchesQuery = !query || item.searchIndex.includes(query);
+
+          if (matchesDiff && matchesQuery) {
+            item.cardElement.style.display = '';
+            visibleCount++;
+            if (item.parentGroup) visibleGroups.add(item.parentGroup);
+          } else {
+            item.cardElement.style.display = 'none';
+          }
+        });
+
+        // Hide module groups with 0 visible cards
+        allModuleGroups.forEach(group => {
+          group.style.display = visibleGroups.has(group) ? '' : 'none';
+        });
+
+        if (matchCountNum) matchCountNum.textContent = visibleCount;
+
+        const isFiltered = (query.length > 0) || (currentDifficulty !== 'all');
+        if (resetLink) resetLink.style.display = isFiltered ? 'inline-flex' : 'none';
+
+        if (clearBtn && kbdHint) {
+          if (query.length > 0) {
+            clearBtn.style.display = 'inline-flex';
+            kbdHint.style.display = 'none';
+          } else {
+            clearBtn.style.display = 'none';
+            kbdHint.style.display = '';
+          }
+        }
+
+        // Empty results state
+        if (visibleCount === 0) {
+          if (noResultsBox) noResultsBox.style.display = 'flex';
+          if (noResultsQueryText) {
+            if (query && currentDifficulty !== 'all') {
+              noResultsQueryText.textContent = `No ${currentDifficulty.toUpperCase()} challenges found matching "${query}".`;
+            } else if (query) {
+              noResultsQueryText.textContent = `No challenges found matching "${query}".`;
+            } else {
+              noResultsQueryText.textContent = `No challenges found in ${currentDifficulty.toUpperCase()} difficulty.`;
+            }
+          }
+        } else {
+          if (noResultsBox) noResultsBox.style.display = 'none';
+        }
+      }
+
+      function resetAll() {
+        currentQuery = '';
+        currentDifficulty = 'all';
+        if (searchInput) searchInput.value = '';
+        filterPills.forEach(pill => {
+          pill.classList.toggle('is-active', pill.dataset.difficulty === 'all');
+        });
+        applyFilters();
+        if (searchInput) searchInput.focus();
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          currentQuery = e.target.value;
+          applyFilters();
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (searchInput) {
+            searchInput.value = '';
+            currentQuery = '';
+            searchInput.focus();
+          }
+          applyFilters();
+        });
+      }
+
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          filterPills.forEach(p => p.classList.remove('is-active'));
+          pill.classList.add('is-active');
+          currentDifficulty = pill.dataset.difficulty || 'all';
+          applyFilters();
+        });
+      });
+
+      if (resetLink) resetLink.addEventListener('click', (e) => { e.preventDefault(); resetAll(); });
+      if (btnResetAll) btnResetAll.addEventListener('click', resetAll);
+
+      // Keyboard Shortcut ('/' to focus, 'Escape' to clear/blur)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement !== searchInput) {
+          e.preventDefault();
+          if (searchInput) {
+            searchInput.focus();
+            searchInput.select();
+          }
+        } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+          if (searchInput.value.length > 0) {
+            searchInput.value = '';
+            currentQuery = '';
+            applyFilters();
+          } else {
+            searchInput.blur();
+          }
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initSearchAndFilter();
+
+      const navToggle = document.getElementById('navToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+
+      if (navToggle && mobileMenu) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.contains('is-open');
+          mobileMenu.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            mobileMenu.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

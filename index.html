@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>LearnForge — Master Programming with Structured Clarity</title>
+  <meta name="description" content="LearnForge is a student-focused learning platform turning computer science concepts into structured, beginner-friendly learning paths with runnable code, practice challenges, and progress tracking.">
+
+  <style>
+    /* ==========================================================================
+       1. PROFESSIONAL DESIGN SYSTEM TOKENS
+       ========================================================================== */
+    :root {
+      --bg-base: #060913;
+      --bg-surface: #0c1222;
+      --bg-surface-elevated: #111a30;
+      --bg-card: rgba(15, 23, 42, 0.72);
+      --bg-card-hover: rgba(22, 34, 61, 0.85);
+      --bg-code: #060a14;
+      --bg-term: #03060c;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --accent-primary: #38bdf8;
+      --accent-primary-hover: #0ea5e9;
+      --accent-indigo: #818cf8;
+      --accent-glow: rgba(56, 189, 248, 0.18);
+      --accent-indigo-glow: rgba(129, 140, 248, 0.18);
+      --accent-badge: #f59e0b;
+      --accent-badge-bg: rgba(245, 158, 11, 0.12);
+      --accent-success: #10b981;
+      --accent-success-bg: rgba(16, 185, 129, 0.12);
+
+      --syn-keyword: #f472b6;
+      --syn-type: #38bdf8;
+      --syn-string: #34d399;
+      --syn-number: #fbbf24;
+      --syn-fn: #60a5fa;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.4);
+      --border-gradient: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(129, 140, 248, 0.1), transparent);
+
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    /* Professional ambient studio glow & fine technical grid */
+    body {
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.15) 0%, transparent 70%),
+        radial-gradient(circle at 90% 25%, rgba(129, 140, 248, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 10% 60%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      background-position: 0 0, 0 0, 0 0, -1px -1px, -1px -1px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 68px;
+      background-color: rgba(6, 9, 19, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 1240px;
+      height: 100%;
+      margin-inline: auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(129, 140, 248, 0.15));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-primary);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+    }
+
+    .brand-logo span {
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+      height: 100%;
+    }
+
+    .desktop-nav-links a {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .desktop-nav-links a:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .desktop-nav-links a.active-link {
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.08);
+      font-weight: 600;
+    }
+
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #030712;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, #38bdf8 100%);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
+    }
+
+    .nav-cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+    }
+
+    .hamburger-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .mobile-menu-drawer {
+      display: none;
+      position: absolute;
+      top: 68px;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.25rem;
+      flex-direction: column;
+      gap: 0.4rem;
+      z-index: 999;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .mobile-menu-drawer.is-open {
+      display: flex;
+    }
+
+    .mobile-menu-drawer a {
+      display: flex;
+      align-items: center;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .mobile-menu-drawer a:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+      color: var(--accent-primary);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+
+    .hero-section {
+      padding: 4.5rem 1.5rem 4rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.35rem 0.95rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-primary);
+    }
+
+    .hero-title {
+      font-size: clamp(2.3rem, 5.5vw, 4.1rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.12;
+      max-width: 900px;
+      margin-bottom: 1.35rem;
+      color: var(--text-main);
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 60%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+      max-width: 740px;
+      line-height: 1.7;
+      margin-bottom: 2.25rem;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.15rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      cursor: pointer;
+      line-height: 1;
+      transition: all var(--transition-smooth);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, #0284c7 100%);
+      color: #020617;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      box-shadow: 0 4px 24px rgba(56, 189, 248, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #7dd3fc 0%, #0369a1 100%);
+      box-shadow: 0 8px 32px rgba(56, 189, 248, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(17, 26, 48, 0.6);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(27, 40, 71, 0.8);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .section {
+      padding: 5.5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.8vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 620px;
+      margin-inline: auto;
+      line-height: 1.65;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .learn-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .learn-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: transparent;
+      transition: background var(--transition-smooth);
+    }
+
+    .learn-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .learn-card.is-active {
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 12px 36px rgba(56, 189, 248, 0.09);
+    }
+
+    .learn-card.is-active::before {
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-indigo));
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.35rem;
+    }
+
+    .course-badge {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: var(--radius-full);
+    }
+
+    .status-pill.active {
+      background-color: var(--accent-success-bg);
+      color: var(--accent-success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-pill.coming {
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--accent-success);
+      box-shadow: 0 0 8px var(--accent-success);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+      flex-grow: 1;
+    }
+
+    /* Embedded Course Module & Challenges Box */
+    .c-modules-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.75rem;
+      background: rgba(4, 7, 15, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: var(--radius-md);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .c-module-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .c-module-stat:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .c-module-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+      line-height: 1.2;
+    }
+
+    .c-module-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.25rem;
+    }
+
+    .card-action {
+      margin-top: auto;
+    }
+
+    .btn-card {
+      width: 100%;
+    }
+
+    .btn-disabled {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+      cursor: not-allowed;
+    }
+
+    .method-section {
+      background: linear-gradient(180deg, rgba(12, 18, 34, 0.5) 0%, rgba(6, 9, 19, 0.7) 100%);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.35rem;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.75rem 1.35rem;
+      transition: all var(--transition-smooth);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .step-num-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .dev-status-card {
+      background: linear-gradient(180deg, rgba(22, 34, 58, 0.7) 0%, rgba(12, 18, 34, 0.9) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 1.75rem;
+      text-align: center;
+      margin-top: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    .dev-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      background-color: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-full);
+    }
+
+    .dev-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-primary);
+    }
+
+    .dev-status-text {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      max-width: 640px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-block: 3rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav-links {
+        display: none;
+      }
+      .nav-cta-btn {
+        display: none;
+      }
+      .hamburger-btn {
+        display: inline-flex;
+      }
+      .hero-section {
+        padding-top: 3.5rem;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .nav-container {
+        padding-inline: 1rem;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="LearnForge Home">
+        <div class="brand-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+            <path d="M12 2v4"></path>
+            <path d="M12 18v4"></path>
+          </svg>
+        </div>
+        <span>LearnForge</span>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <ul class="desktop-nav-links">
+          <li><a href="index.html" class="active-link">Home</a></li>
+          <li><a href="c_basic.html">Course</a></li>
+          <li><a href="Practice_Lab.html">Practice Lab</a></li>
+          <li><a href="#learn">Curriculum</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+        <a href="c-basics.html" class="nav-cta-btn">
+          <span>Start Learning</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <button class="hamburger-btn" id="navToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu-drawer" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="c-basics.html">C Programming Course (16 Modules)</a>
+      <a href="practice.html">Practice Lab (48 Challenges)</a>
+      <a href="#learn">Curriculum Tracks</a>
+      <a href="#about">About LearnForge</a>
+    </div>
+  </header>
+
+  <header class="hero-section">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span>Interactive Student Learning Platform</span>
+    </div>
+
+    <h1 class="hero-title">
+      Master Programming with <br><span class="gradient-text">Structured Clarity</span>
+    </h1>
+
+    <p class="hero-desc">
+      LearnForge bridges the gap between complex textbook theory and practical code. Learn fundamental concepts through clear explanations, verified compiler outputs, and hands-on practice challenges.
+    </p>
+
+    <div class="hero-actions">
+      <a href="c-basics.html" class="btn btn-primary">
+        <span>Start Learning C</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      <a href="practice.html" class="btn btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        <span>Explore Practice Lab</span>
+      </a>
+    </div>
+  </header>
+
+  <section id="learn" class="section">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-badge">Curriculum Paths</span>
+        <h2 class="section-title">Start Your Learning Journey</h2>
+        <p class="section-desc">Choose a foundational track and build mastery through structured, step-by-step modules.</p>
+      </header>
+
+      <div class="cards-grid">
+        <!-- Card 1: C Programming (Active Prototype) -->
+        <article class="learn-card is-active">
+          <div class="card-top">
+            <span class="course-badge">C</span>
+            <span class="status-pill active">
+              <span class="pulse-dot"></span>
+              Available Now
+            </span>
+          </div>
+          <h3 class="card-title">C Programming</h3>
+          <p class="card-desc">
+            Master the foundation of computing. From Dennis Ritchie's core design to pointers, 2-D matrices, and binary search algorithms.
+          </p>
+
+          <!-- Module Stats Box -->
+          <div class="c-modules-box">
+            <div class="c-module-stat">
+              <span class="c-module-val">16</span>
+              <span class="c-module-label">Core Modules</span>
+            </div>
+            <div class="c-module-stat">
+              <span class="c-module-val">48</span>
+              <span class="c-module-label">Practice Labs</span>
+            </div>
+          </div>
+
+          <div class="card-action">
+            <a href="c-basics.html" class="btn btn-primary btn-card">
+              <span>Explore C Course</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2: Python (In Development) -->
+        <article class="learn-card">
+          <div class="card-top">
+            <span class="course-badge" style="color: #60a5fa; background: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.25);">Py</span>
+            <span class="status-pill coming">Coming Soon</span>
+          </div>
+          <h3 class="card-title">Python for Beginners</h3>
+          <p class="card-desc">
+            Clean syntax, readable logic, and rapid problem-solving tailored for algorithmic thinking and modern computing tasks.
+          </p>
+          <div class="card-action">
+            <button class="btn btn-disabled" disabled>In Development</button>
+          </div>
+        </article>
+
+        <!-- Card 3: Data Structures (In Development) -->
+        <article class="learn-card">
+          <div class="card-top">
+            <span class="course-badge" style="color: #c084fc; background: rgba(192, 132, 252, 0.1); border-color: rgba(192, 132, 252, 0.25);">DS</span>
+            <span class="status-pill coming">Coming Soon</span>
+          </div>
+          <h3 class="card-title">Data Structures &amp; Algorithms</h3>
+          <p class="card-desc">
+            Master linked lists, stacks, queues, trees, and time complexity to solve algorithmic challenges with confidence.
+          </p>
+          <div class="card-action">
+            <button class="btn btn-disabled" disabled>In Development</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section method-section">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-badge">The LearnForge Method</span>
+        <h2 class="section-title">How You Learn on LearnForge</h2>
+        <p class="section-desc">A five-stage learning loop engineered to make programming concepts stick.</p>
+      </header>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num-pill">STEP 01</span>
+          <h3 class="step-title">Understand</h3>
+          <p class="step-text">Clear explanations and beginner analogies demystify concepts before writing code.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num-pill">STEP 02</span>
+          <h3 class="step-title">See Code</h3>
+          <p class="step-text">Inspect clean, annotated code snippets with line-by-line syntax breakdowns.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num-pill">STEP 03</span>
+          <h3 class="step-title">Verify Output</h3>
+          <p class="step-text">Confirm terminal execution to understand how computer instructions actually run.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num-pill">STEP 04</span>
+          <h3 class="step-title">Practice</h3>
+          <p class="step-text">Tackle progressive challenges with collapsible hints and full working solutions.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num-pill">STEP 05</span>
+          <h3 class="step-title">Track Progress</h3>
+          <p class="step-text">Mark topics complete and view live progress percentages saved in your browser.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-badge">Platform Mission</span>
+        <h2 class="section-title">About LearnForge</h2>
+        <p class="section-desc">Built by students, designed for learners.</p>
+      </header>
+
+      <div style="max-width: 760px; margin-inline: auto; text-align: center; color: var(--text-muted); font-size: 1.05rem; line-height: 1.8;">
+        <p style="margin-bottom: 1.25rem;">
+          LearnForge was created to solve a universal hurdle in computer science education: college textbooks can be dense and abstract, while online tutorials are often fragmented and confusing.
+        </p>
+        <p>
+          Our platform brings syllabus-aligned fundamentals together with clean code demonstrations, verified outputs, and dedicated practice labs so every student can build genuine mastery.
+        </p>
+      </div>
+
+      <!-- Project Status Notification Card -->
+      <div class="dev-status-card">
+        <div class="dev-status-badge">
+          <span class="dev-pulse-dot" aria-hidden="true"></span>
+          <span>Project Under Active Development</span>
+        </div>
+        <p class="dev-status-text">
+          <strong>Notice:</strong> LearnForge is an evolving student learning platform. We are actively expanding interactive exercises, curriculum modules, and testing features.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 700; color: var(--text-main); margin-bottom: 0.4rem;">LearnForge</p>
+      <p>&copy; 2026 LearnForge • Student Learning Platform • Learn • Practice • Build</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navToggle = document.getElementById('navToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+
+      if (navToggle && mobileMenu) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.contains('is-open');
+          mobileMenu.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
